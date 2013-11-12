@@ -1,3 +1,5 @@
+## Integration
+
 This sample shows how Rebus can be used with a request/reply pattern to make
 communication with an external web service more robust.
 
@@ -10,7 +12,6 @@ just infinitely useful in scanrios like this.
 
 In order to run this sample, make the following projects be startup projects:
 
-	IntegrationSample.Client
-	IntegrationSample.IntegrationService
-	IntegrationSample.ExternalWebService
-
+        IntegrationSample.Client
+        IntegrationSample.IntegrationService
+        IntegrationSample.ExternalWebService

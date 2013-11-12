@@ -1,4 +1,6 @@
-﻿The TimePrinter sample shows how a program can easily schedule recurring tasks via
+﻿## TimePrinter
+
+The TimePrinter sample shows how a program can easily schedule recurring tasks via
 messaging. This approach is cool because it benefits from Rebus' automatic retries
 and error handling, dependency injection and component lifetime management, easy
 monitoring etc.
