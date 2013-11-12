@@ -1,10 +1,10 @@
 ﻿using System;
 using Rebus;
 using Rebus.Configuration;
-using Rebus.Transports.Msmq;
 using Rebus.Logging;
+using Rebus.Transports.Msmq;
 
-namespace PubSub.Subscriber1
+namespace PubSub.Subscriber2
 {
     class Program
     {
