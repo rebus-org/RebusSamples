@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rebus.MongoDb</name>
+    </assembly>
+    <members>
+        <member name="T:Rebus.MongoDb.MongoDbExtensions">
+            <summary>
+            Configuration extensions to allow for fluently configuring Rebus with MongoDB
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbExtensions.StoreInMongoDb(Rebus.Configuration.RebusSubscriptionsConfigurer,System.String,System.String)">
+            <summary>
+            Configures Rebus to store subscriptions in the given collection in MongoDB, in the database specified by the connection string
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbExtensions.StoreInMongoDb(Rebus.Configuration.RebusSagasConfigurer,System.String)">
+            <summary>
+            Configures Rebus to store saga data in MongoDB, in the database specified by the connection string
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbExtensions.StoreInMongoDb(Rebus.Configuration.RebusTimeoutsConfigurer,System.String,System.String)">
+            <summary>
+            Configures Rebus to store timeouts internally in the given collection in MongoDB, in the database specified by the connection string
+            </summary>
+        </member>
+        <member name="T:Rebus.MongoDb.MongoDbExtensions.MongoDbSagaPersisterConfigurationBuilder">
+            <summary>
+            Fluent builder class that forwards calls to the configured saga persister instance
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbExtensions.MongoDbSagaPersisterConfigurationBuilder.SetCollectionName``1(System.String)">
+            <summary>
+            Configures the saga persister to store saga data of the given type in the specified collection
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbExtensions.MongoDbSagaPersisterConfigurationBuilder.AllowAutomaticSagaCollectionNames">
+            <summary>
+            Turns on automatic saga collection name generation - will kick in for all saga data types that have
+            not had a collection name explicitly configured
+            </summary>
+        </member>
+        <member name="T:Rebus.MongoDb.MongoDbSagaPersister">
+            <summary>
+            MongoDB implementation of Rebus' <see cref="T:Rebus.IStoreSagaData"/>. Will store saga data as they are serialized by the
+            default BSON serializer, with the exception that the <see cref="P:Rebus.ISagaData.Revision"/> property is serialized with
+            "_rev" as the property name.
+            </summary>
+        </member>
+        <member name="F:Rebus.MongoDb.MongoDbSagaPersister.indexEnsuredRecently">
+            <summary>
+            We keep track whether the index has been declared recently in order to minimize the risk that someone
+            accidentally removes the unique constraint behind our back
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.#ctor(System.String)">
+            <summary>
+            Constructs the persister which will connect to the Mongo database pointed to by the connection string.
+            This also means that the connection string must include the database name.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.AllowAutomaticSagaCollectionNames">
+            <summary>
+            Tells the persister that it's ok that it comes up with collection names for saga data by itself. This
+            lowers the friction, but since the saga data type name is used to come up with a collection name, it
+            would cause weird behaviour if you renamed a saga data class.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.SetCollectionName``1(System.String)">
+            <summary>
+            Tells the persister to store saga data of the specified type in the collection with the given name
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.Insert(Rebus.ISagaData,System.String[])">
+            <summary>
+            Inserts the given saga data, once in a while also ensuring that synchronous indexes with unique
+            constraints are created for the given saga data property paths.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.Update(Rebus.ISagaData,System.String[])">
+            <summary>
+            Updates the given saga data with an optimistic lock, once in a while also ensuring that synchronous
+            indexes with unique constraints are created for the given saga data property paths.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.Delete(Rebus.ISagaData)">
+            <summary>
+            Deletes the given saga data from the underlying Mongo collection. Throws and <see cref="T:Rebus.OptimisticLockingException"/>
+            if not exactly one saga data document was deleted.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.Find``1(System.String,System.Object)">
+            <summary>
+            Queries the underlying Mongo collection for a saga data of the given type with the
+            given value at the specified property path. Returns null if none could be found.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSagaPersister.GetRevisionElementName(Rebus.ISagaData)">
+            <summary>
+            Asks the BSON serializer what is the Mongo element name for the revision
+            property of saga data of the given type
+            </summary>
+        </member>
+        <member name="T:Rebus.MongoDb.MongoDbSubscriptionStorage">
+            <summary>
+            MongoDB implementation of Rebus' <see cref="T:Rebus.IStoreSubscriptions"/>. Will store subscriptions in one document per
+            logical event type, keeping an array of subscriber endpoints inside that document. The document _id is
+            the full name of the event type.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSubscriptionStorage.#ctor(System.String,System.String)">
+            <summary>
+            Constructs the storage to persist subscriptions in the given collection, in the database specified by the connection string.
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSubscriptionStorage.Store(System.Type,System.String)">
+            <summary>
+            Adds the given subscriber input queue to the collection of endpoints listed as subscribers of the given event type
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSubscriptionStorage.Remove(System.Type,System.String)">
+            <summary>
+            Removes the given subscriber from the collection of endpoints listed as subscribers of the given event type
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbSubscriptionStorage.GetSubscribers(System.Type)">
+            <summary>
+            Gets all subscriber for the given event type
+            </summary>
+        </member>
+        <member name="T:Rebus.MongoDb.MongoDbTimeoutStorage">
+            <summary>
+            Implementation of <see cref="T:Rebus.Timeout.IStoreTimeouts"/> that stores timeouts in a MongoDB
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbTimeoutStorage.#ctor(System.String,System.String)">
+            <summary>
+            Constructs the timeout storage, connecting to the Mongo database pointed to by the given connection string,
+            storing the timeouts in the given collection
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbTimeoutStorage.Add(Rebus.Timeout.Timeout)">
+            <summary>
+            Adds the timeout to the underlying collection of timeouts
+            </summary>
+        </member>
+        <member name="M:Rebus.MongoDb.MongoDbTimeoutStorage.GetDueTimeouts">
+            <summary>
+            Gets all timeouts that are due by now. Doesn't remove the timeouts or change them or anything,
+            each individual timeout can be marked as processed by calling <see cref="M:Rebus.Timeout.DueTimeout.MarkAsProcessed"/>
+            </summary>
+        </member>
+    </members>
+</doc>

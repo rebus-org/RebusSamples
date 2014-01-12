@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rebus.Log4net</name>
+    </assembly>
+    <members>
+        <member name="T:Rebus.Log4Net.Log4NetLoggerFactory">
+            <summary>
+            Implementation of <see cref="T:Rebus.Logging.IRebusLoggerFactory"/> that creates loggers that log
+            their stuff using Log4net
+            </summary>
+        </member>
+        <member name="M:Rebus.Log4Net.Log4NetLoggerFactory.GetLogger(System.Type)">
+            <summary>
+            Gets a logger for the specified type - will delegate the call to Log4Net's log manager
+            </summary>
+        </member>
+        <member name="T:Rebus.Log4Net.Log4NetLoggingExtension">
+            <summary>
+            Extensions to <see cref="T:Rebus.Configuration.LoggingConfigurer"/> that allows for choosing Log4net for all of Rebus' internal logging needs
+            </summary>
+        </member>
+        <member name="F:Rebus.Log4Net.Log4NetLoggingExtension.DefaultCorrelationIdPropertyKey">
+            <summary>
+            Default Log4Net thread context key to use for setting the correlation ID of the message currently being handled.
+            </summary>
+        </member>
+        <member name="M:Rebus.Log4Net.Log4NetLoggingExtension.Log4Net(Rebus.Configuration.LoggingConfigurer)">
+            <summary>
+            Configures Rebus to use Log4net for all of its internal logging. Will automatically add a 'CorrelationId' variable to the Log4Net
+            thread context when handling messages, allowing log output to include that.
+            </summary>
+        </member>
+        <member name="M:Rebus.Log4Net.Log4NetLoggingExtension.Log4Net(Rebus.Configuration.LoggingConfigurer,System.String)">
+            <summary>
+            Configures Rebus to use Log4net for all of its internal logging. Will automatically add a correlation ID variable to the Log4Net
+            thread context under the key specified by <paramref name="overriddenCorrelationIdPropertyKey"/> when handling messages, 
+            allowing log output to include that.
+            </summary>
+        </member>
+    </members>
+</doc>
