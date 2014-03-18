@@ -6,6 +6,7 @@ Check out
 * [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
 * [Pub/sub sample](/PubSub) - demonstrates how pub/sub can be wired up
 * [Integration sample](/Integration) - demonstrates how calling an external web service can be made more robust
+* [User context sample](/UserContextHeaders) - shows how an ambient user context can be passed along with messages 
 
 ### Scaleout samples
 
