@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using Castle.MicroKernel;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using FullBlownConsoleApplication.Config;
