@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using Rebus.Configuration;
 using Rebus.Logging;
@@ -17,7 +16,7 @@ namespace Shared
             {
                 adapter.Handle<string>(str => Console.WriteLine("Got message: {0}", str));
 
-                Console.WriteLine("Starting bus...");
+                Console.WriteLine("Starting bus in {0}...", _endpointName);
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
