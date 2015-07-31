@@ -1,23 +1,27 @@
 ﻿using System;
 using System.IO;
-using Rebus.Configuration;
-using Rebus.Transports.Msmq;
+using Rebus.Activation;
+using Rebus.Config;
+using Rebus.Extensions;
 using Rebus.Logging;
+using Rebus.Persistence.FileSystem;
+using Rebus.Transport.Msmq;
 
 namespace PubSub.Publisher
 {
     class Program
     {
+        static readonly string JsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "rebus_subscriptions.json");
+
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var activator = new BuiltinHandlerActivator())
             {
-                Configure.With(adapter)
+                Configure.With(activator)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                         .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                         .Subscriptions(s => s.StoreInXmlFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "rebus_subscriptions.xml")))
-                         .CreateBus()
-                         .Start();
+                    .Transport(t => t.UseMsmq("publisher"))
+                    .Subscriptions(s => s.UseJsonFile(JsonFilePath))
+                    .Start();
 
                 var startupTime = DateTime.Now;
 
@@ -33,15 +37,15 @@ q) Quit");
                     switch (keyChar)
                     {
                         case 'a':
-                            adapter.Bus.Publish("Hello there, I'm a publisher!");
+                            activator.Bus.Publish("Hello there, I'm a publisher!").Wait();
                             break;
 
                         case 'b':
-                            adapter.Bus.Publish(DateTime.Now);
+                            activator.Bus.Publish(DateTime.Now).Wait();
                             break;
 
                         case 'c':
-                            adapter.Bus.Publish(DateTime.Now - startupTime);
+                            activator.Bus.Publish(DateTime.Now - startupTime).Wait();
                             break;
 
                         case 'q':

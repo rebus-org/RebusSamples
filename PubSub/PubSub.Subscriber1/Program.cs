@@ -1,8 +1,12 @@
 ﻿using System;
-using Rebus;
-using Rebus.Configuration;
-using Rebus.Transports.Msmq;
+using System.Threading.Tasks;
+using Rebus.Activation;
+using Rebus.Config;
+using Rebus.Extensions;
+using Rebus.Handlers;
 using Rebus.Logging;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.Msmq;
 
 namespace PubSub.Subscriber1
 {
@@ -10,20 +14,19 @@ namespace PubSub.Subscriber1
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var activator = new BuiltinHandlerActivator())
             {
-                adapter.Register(typeof(Handler));
+                activator.Register(() => new Handler());
 
-                Configure.With(adapter)
-                         .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                         .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                         .MessageOwnership(o => o.FromRebusConfigurationSection())
-                         .CreateBus()
-                         .Start();
+                Configure.With(activator)
+                    .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
+                    .Transport(t => t.UseMsmq("subscriber1"))
+                    .Routing(r => r.TypeBased().MapAssemblyOf<string>("publisher"))
+                    .Start();
 
-                adapter.Bus.Subscribe<string>();
-                adapter.Bus.Subscribe<DateTime>();
-                adapter.Bus.Subscribe<TimeSpan>();
+                activator.Bus.Subscribe<string>().Wait();
+                activator.Bus.Subscribe<DateTime>().Wait();
+                activator.Bus.Subscribe<TimeSpan>().Wait();
 
                 Console.WriteLine("Press ENTER to quit");
                 Console.ReadLine();
@@ -33,17 +36,17 @@ namespace PubSub.Subscriber1
 
     class Handler : IHandleMessages<string>, IHandleMessages<DateTime>, IHandleMessages<TimeSpan>
     {
-        public void Handle(string message)
+        public async Task Handle(string message)
         {
             Console.WriteLine("Got string: {0}", message);
         }
 
-        public void Handle(DateTime message)
+        public async Task Handle(DateTime message)
         {
             Console.WriteLine("Got DateTime: {0}", message);
         }
 
-        public void Handle(TimeSpan message)
+        public async Task Handle(TimeSpan message)
         {
             Console.WriteLine("Got TimeSpan: {0}", message);
         }

@@ -1,8 +1,12 @@
 ﻿using System;
-using Rebus;
-using Rebus.Configuration;
+using System.Threading.Tasks;
+using Rebus.Activation;
+using Rebus.Config;
+using Rebus.Extensions;
+using Rebus.Handlers;
 using Rebus.Logging;
-using Rebus.Transports.Msmq;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.Msmq;
 
 namespace PubSub.Subscriber2
 {
@@ -10,18 +14,17 @@ namespace PubSub.Subscriber2
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var activator = new BuiltinHandlerActivator())
             {
-                adapter.Register(typeof(Handler));
+                activator.Register(() => new Handler());
 
-                Configure.With(adapter)
+                Configure.With(activator)
                          .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                         .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                         .MessageOwnership(o => o.FromRebusConfigurationSection())
-                         .CreateBus()
+                         .Transport(t => t.UseMsmq("subscriber2"))
+                         .Routing(r => r.TypeBased().MapAssemblyOf<string>("publisher"))
                          .Start();
 
-                adapter.Bus.Subscribe<string>();
+                activator.Bus.Subscribe<string>().Wait();
 
                 Console.WriteLine("Press ENTER to quit");
                 Console.ReadLine();
@@ -31,7 +34,7 @@ namespace PubSub.Subscriber2
 
     class Handler : IHandleMessages<string>
     {
-        public void Handle(string message)
+        public async Task Handle(string message)
         {
             Console.WriteLine("Got string: {0}", message);
         }
