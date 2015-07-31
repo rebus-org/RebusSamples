@@ -1,29 +1,32 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Timers;
-using Rebus;
-using Rebus.Configuration;
-using Rebus.Transports.Msmq;
-using Rebus.Logging;
+using Rebus.Activation;
+using Rebus.Config;
+using Rebus.Handlers;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.Msmq;
 
 namespace TimePrinter
 {
     class Program
     {
+        const string InputQueueName = "my-app.input";
+
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var activator = new BuiltinHandlerActivator())
             using (var timer = new Timer())
             {
-                adapter.Register(() => new PrintDateTime());
+                activator.Register(() => new PrintDateTime());
 
-                var bus = Configure.With(adapter)
+                var bus = Configure.With(activator)
                                    .Logging(l => l.None())
-                                   .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                                   .MessageOwnership(d => d.FromRebusConfigurationSection())
-                                   .CreateBus()
+                                   .Transport(t => t.UseMsmq(InputQueueName))
+                                   .Routing(r => r.TypeBased().Map<DateTime>(InputQueueName))
                                    .Start();
 
-                timer.Elapsed += delegate { bus.Send(DateTime.Now); };
+                timer.Elapsed += delegate { bus.Send(DateTime.Now).Wait(); };
                 timer.Interval = 1000;
                 timer.Start();
 
@@ -35,7 +38,7 @@ namespace TimePrinter
 
     class PrintDateTime : IHandleMessages<DateTime>
     {
-        public void Handle(DateTime currentDateTime)
+        public async Task Handle(DateTime currentDateTime)
         {
             Console.WriteLine("The time is {0}", currentDateTime);
         }
