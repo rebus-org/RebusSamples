@@ -53,15 +53,14 @@
     </Reference>
     <Reference Include="Rebus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rebus.0.48.0\lib\NET40\Rebus.dll</HintPath>
+      <HintPath>..\packages\Rebus.0.95.0\lib\NET45\Rebus.dll</HintPath>
     </Reference>
-    <Reference Include="Rebus.Castle.Windsor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rebus.Castle.Windsor.0.48.0\lib\NET40\Rebus.Castle.Windsor.dll</HintPath>
+    <Reference Include="Rebus.CastleWindsor">
+      <HintPath>..\packages\Rebus.Castle.Windsor.0.95.0\lib\NET45\Rebus.CastleWindsor.dll</HintPath>
     </Reference>
     <Reference Include="Rebus.Log4net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rebus.Log4Net.0.48.0\lib\NET40\Rebus.Log4net.dll</HintPath>
+      <HintPath>..\packages\Rebus.Log4Net.0.95.0\lib\NET45\Rebus.Log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

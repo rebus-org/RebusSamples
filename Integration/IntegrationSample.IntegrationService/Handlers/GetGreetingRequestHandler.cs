@@ -1,23 +1,29 @@
-﻿using IntegrationSample.IntegrationService.Messages;
+﻿using System.Threading.Tasks;
+using IntegrationSample.IntegrationService.Messages;
 using IntegrationSample.IntegrationService.SomethingExternal;
-using Rebus;
+using Rebus.Bus;
+using Rebus.Handlers;
 
 namespace IntegrationSample.IntegrationService.Handlers
 {
     public class GetGreetingRequestHandler : IHandleMessages<GetGreetingRequest>
     {
-        readonly IBus bus;
+        readonly IBus _bus;
 
         public GetGreetingRequestHandler(IBus bus)
         {
-            this.bus = bus;
+            _bus = bus;
         }
 
-        public void Handle(GetGreetingRequest message)
+        public async Task Handle(GetGreetingRequest message)
         {
             using (var client = new Service1Client())
             {
-                bus.Reply(new GetGreetingReply {TheGreeting = client.GetGreeting()});
+                var greeting = client.GetGreeting();
+
+                var reply = new GetGreetingReply {TheGreeting = greeting};
+
+                await _bus.Reply(reply);
             }
         }
     }

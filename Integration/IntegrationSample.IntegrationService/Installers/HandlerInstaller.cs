@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Rebus;
+using Rebus.Handlers;
 
 namespace IntegrationSample.IntegrationService.Installers
 {
@@ -9,9 +9,10 @@ namespace IntegrationSample.IntegrationService.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(AllTypes.FromThisAssembly().BasedOn<IHandleMessages>()
-                                   .WithService.AllInterfaces()
-                                   .LifestyleTransient());
+            container.Register(Classes.FromThisAssembly()
+                .BasedOn<IHandleMessages>()
+                .WithService.AllInterfaces()
+                .LifestyleTransient());
         }
     }
 }

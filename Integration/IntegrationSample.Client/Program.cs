@@ -3,11 +3,11 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using IntegrationSample.Client.Handlers;
 using IntegrationSample.IntegrationService.Messages;
-using Rebus;
-using Rebus.Castle.Windsor;
-using Rebus.Transports.Msmq;
-using Rebus.Configuration;
-using Rebus.Logging;
+using Rebus.CastleWindsor;
+using Rebus.Config;
+using Rebus.Handlers;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.Msmq;
 
 namespace IntegrationSample.Client
 {
@@ -20,11 +20,11 @@ namespace IntegrationSample.Client
                               .ImplementedBy<GetGreetingReplyHandler>()
                               .LifestyleTransient());
 
-            var bus = Configure.With(new WindsorContainerAdapter(container))
+            var bus = Configure.With(new CastleWindsorContainerAdapter(container))
                 .Logging(l => l.None()) // disable logging to avoid polluting the console
-                .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                .MessageOwnership(d => d.FromRebusConfigurationSection())
-                .CreateBus().Start();
+                .Transport(t => t.UseMsmq("IntegrationSample.Client.input"))
+                .Routing(d => d.TypeBased().MapAssemblyOf<GetGreetingRequest>("IntegrationSample.IntegrationService.input"))
+                .Start();
 
             Console.WriteLine("Press R to request a greeting and Q to quit...");
 
@@ -36,7 +36,7 @@ namespace IntegrationSample.Client
                 switch (char.ToLower(key.KeyChar))
                 {
                     case 'r':
-                        bus.Send(new GetGreetingRequest());
+                        bus.Send(new GetGreetingRequest()).Wait();
                         break;
 
                     case 'q':
