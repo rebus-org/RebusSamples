@@ -13,7 +13,7 @@ namespace IntegrationSample.IntegrationService.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             Configure.With(new CastleWindsorContainerAdapter(container))
-                .Logging(l => l.NLog())
+                .Logging(l => l.Log4Net())
                 .Transport(t => t.UseMsmq("IntegrationSample.IntegrationService.input"))
                 .Start();
         }
