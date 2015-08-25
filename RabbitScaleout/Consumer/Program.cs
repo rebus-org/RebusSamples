@@ -4,7 +4,6 @@ using Messages;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Persistence.SqlServer;
 using Rebus.RabbitMq;
 
 namespace Consumer
@@ -24,7 +23,6 @@ namespace Consumer
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
                     .Transport(t => t.UseRabbitMq("amqp://localhost", "consumer"))
-                    .Subscriptions(s => s.StoreInSqlServer("server=.;database=rabbitscaleout;trusted_connection=true", "subscriptions", isCentralized: true))
                     .Start();
 
                 adapter.Bus.Subscribe<Job>().Wait();

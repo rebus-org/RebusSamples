@@ -6,7 +6,6 @@ using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Persistence.SqlServer;
 using Rebus.RabbitMq;
 
 namespace Producer
@@ -20,7 +19,6 @@ namespace Producer
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
                     .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://localhost"))
-                    .Subscriptions(s => s.StoreInSqlServer("server=.;database=rabbitscaleout;trusted_connection=true", "subscriptions", isCentralized:true))
                     .Start();
 
                 var keepRunning = true;
