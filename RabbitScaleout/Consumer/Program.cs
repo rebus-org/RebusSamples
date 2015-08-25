@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using Messages;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.RabbitMQ;
+using Rebus.Persistence.SqlServer;
+using Rebus.RabbitMq;
 
 namespace Consumer
 {
@@ -11,23 +13,21 @@ namespace Consumer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
-                adapter.Handle<Job>(job =>
+                adapter.Handle<Job>(async job =>
                 {
                     Console.WriteLine("Processing job {0}", job.JobNumber);
-                    Thread.Sleep(200);
+                    Thread.Sleep(100);
                 });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMq("amqp://localhost", "consumer", "error")
-                        .ManageSubscriptions()
-                        .SetPrefetchCount(65535))
-                    .CreateBus()
-                    .Start(20);
+                    .Transport(t => t.UseRabbitMq("amqp://localhost", "consumer"))
+                    .Subscriptions(s => s.StoreInSqlServer("server=.;database=rabbitscaleout;trusted_connection=true", "subscriptions", isCentralized: true))
+                    .Start();
 
-                adapter.Bus.Subscribe<Job>();
+                adapter.Bus.Subscribe<Job>().Wait();
 
                 Console.WriteLine("Consumer listening - press ENTER to quit");
                 Console.ReadLine();
