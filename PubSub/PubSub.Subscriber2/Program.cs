@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Rebus.Activation;
 using Rebus.Config;
-using Rebus.Extensions;
 using Rebus.Handlers;
 using Rebus.Logging;
 using Rebus.Routing.TypeBased;
