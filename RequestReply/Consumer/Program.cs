@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using Consumer.Messages;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transports.Sql;
+using Rebus.Transport.SqlServer;
 
 namespace Consumer
 {
@@ -11,17 +12,16 @@ namespace Consumer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
-                adapter.Handle<Job>(job =>
+                adapter.Handle<Job>(async (bus, job) =>
                 {
-                    adapter.Bus.Reply(new Reply(job.KeyChar, Process.GetCurrentProcess().Id));
+                    await bus.Reply(new Reply(job.KeyChar, Process.GetCurrentProcess().Id));
                 });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                    .Transport(t => t.UseSqlServer("server=.; database=rebus; trusted_connection=true", "consumer.input", "error").EnsureTableIsCreated())
-                    .CreateBus()
+                    .Transport(t => t.UseSqlServer("server=.; database=rebus; trusted_connection=true", "Messages", "consumer.input"))
                     .Start();
 
                 Console.WriteLine("Press ENTER to quit");

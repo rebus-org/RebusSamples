@@ -1,8 +1,10 @@
 ﻿using System;
 using Consumer.Messages;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transports.Sql;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.SqlServer;
 
 namespace Producer
 {
@@ -10,15 +12,17 @@ namespace Producer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
-                adapter.Handle<Reply>(reply => Console.WriteLine("Got reply '{0}' (from OS process {1})", reply.KeyChar, reply.OsProcessId));
+                adapter.Handle<Reply>(async reply =>
+                {
+                    Console.WriteLine("Got reply '{0}' (from OS process {1})", reply.KeyChar, reply.OsProcessId);
+                });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                    .Transport(t => t.UseSqlServer("server=.; database=rebus; trusted_connection=true", "producer.input", "error").EnsureTableIsCreated())
-                    .MessageOwnership(o => o.FromRebusConfigurationSection())
-                    .CreateBus()
+                    .Transport(t => t.UseSqlServer("server=.; database=rebus; trusted_connection=true", "Messages", "producer.input"))
+                    .Routing(r => r.TypeBased().MapAssemblyOf<Job>("consumer.input"))
                     .Start();
 
                 Console.WriteLine("Press Q to quit or any other key to produce a job");
@@ -32,7 +36,7 @@ namespace Producer
                             goto quit;
 
                         default:
-                            adapter.Bus.Send(new Job(keyChar));
+                            adapter.Bus.Send(new Job(keyChar)).Wait();
                             break;
                     }
                 }
