@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using Messages;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transports.Sql;
+using Rebus.Transport.SqlServer;
 
 namespace Consumer
 {
@@ -11,20 +12,20 @@ namespace Consumer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
-                adapter.Handle<Job>(job =>
+                adapter.Handle<Job>(async job =>
                 {
                     Console.WriteLine("Processing job {0}", job.JobNumber);
-                    Thread.Sleep(200);
+                    
+                    await Task.Delay(TimeSpan.FromMilliseconds(300));
                 });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseSqlServer("server=.;initial catalog=rebus_test;integrated security=true", "consumer", "error")
-                                     .EnsureTableIsCreated())
-                    .CreateBus()
-                    .Start(20);
+                    .Transport(t => t.UseSqlServer("server=.; initial catalog=rebus; integrated security=true", "Messages", "consumer"))
+                    .Options(o => o.SetNumberOfWorkers(1).SetMaxParallelism(20))
+                    .Start();
 
                 Console.WriteLine("Consumer listening - press ENTER to quit");
                 Console.ReadLine();

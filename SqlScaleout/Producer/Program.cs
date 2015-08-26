@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Messages;
-using Rebus;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Bus;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transports.Sql;
+using Rebus.Routing.TypeBased;
+using Rebus.Transport.SqlServer;
 
 namespace Producer
 {
@@ -13,14 +15,12 @@ namespace Producer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .MessageOwnership(o => o.FromRebusConfigurationSection())
-                    .Transport(t => t.UseSqlServerInOneWayClientMode("server=.;initial catalog=rebus_test;integrated security=true")
-                                     .EnsureTableIsCreated())
-                    .CreateBus()
+                    .Transport(t => t.UseSqlServerAsOneWayClient("server=.; initial catalog=rebus; integrated security=true", "Messages"))
+                    .Routing(r => r.TypeBased().MapAssemblyOf<Job>("consumer"))
                     .Start();
 
                 var keepRunning = true;
@@ -58,10 +58,12 @@ q) Quit");
         {
             Console.WriteLine("Publishing {0} jobs", numberOfJobs);
 
-            var jobs = Enumerable.Range(0, numberOfJobs)
-                .Select(i => new Job { JobNumber = i });
+            var sendTasks = Enumerable.Range(0, numberOfJobs)
+                .Select(i => new Job { JobNumber = i })
+                .Select(job => bus.Send(job))
+                .ToArray();
 
-            Parallel.ForEach(jobs, bus.Send);
+            Task.WaitAll(sendTasks);
         }
     }
 }
