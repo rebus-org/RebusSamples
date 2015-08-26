@@ -6,7 +6,7 @@ namespace Endpoint1
     {
         static void Main()
         {
-            new SharedCodez().Run();
+            new SharedCodez().Run("endpoint1");
         }
     }
 }

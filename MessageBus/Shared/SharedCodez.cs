@@ -1,33 +1,35 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
-using Rebus.Configuration;
+using Rebus.Activation;
+using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transports.Msmq;
+using Rebus.Persistence.SqlServer;
+using Rebus.Transport.Msmq;
+
+#pragma warning disable 1998
 
 namespace Shared
 {
     public class SharedCodez
     {
 
-        public void Run()
+        public void Run(string inputQueueName)
         {
-            var endpointName = Assembly.GetEntryAssembly().GetName().Name;
-            var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RebusSamples", "MessageBus");
-            var subscriptionsFilePath = Path.Combine(directory, "subscriptions.xml");
+            var endpointName = string.Format("{0} ({1})", Assembly.GetEntryAssembly().GetName().Name, inputQueueName);
 
-            using (var adapter = new BuiltinContainerAdapter())
+            using (var adapter = new BuiltinHandlerActivator())
             {
-                adapter.Handle<string>(str => Console.WriteLine("Got message: {0}", str));
+                adapter.Handle<string>(async str =>
+                {
+                    Console.WriteLine("Got message: {0}", str);
+                });
 
-                Console.WriteLine("Starting {0} bus - using subscription storage in {1}...", endpointName, subscriptionsFilePath);
-                
+                Console.WriteLine("Starting {0} bus", endpointName);
+
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                    .Transport(t => t.UseMsmqAndGetInputQueueNameFromAppConfig())
-                    .MessageOwnership(o => o.FromRebusConfigurationSection())
-                    .Subscriptions(s => s.StoreInXmlFile(subscriptionsFilePath))
-                    .CreateBus()
+                    .Transport(t => t.UseMsmq(inputQueueName))
+                    .Subscriptions(s => s.StoreInSqlServer("server=.; database=messagebus; trusted_connection=true", "subscriptions", isCentralized: true))
                     .Start();
 
                 Console.WriteLine(@"-------------------------------
@@ -44,21 +46,21 @@ Q) Quit
                 {
                     var key = Console.ReadKey(true);
 
-                    switch (char.ToLower(key.KeyChar))
+                    switch (char.ToLower(key.KeyChar)) 
                     {
                         case 'a':
                             Console.WriteLine("Subscribing!");
-                            adapter.Bus.Subscribe<string>();
+                            adapter.Bus.Subscribe<string>().Wait();
                             break;
 
                         case 'b':
                             Console.WriteLine("Unsubscribing!");
-                            adapter.Bus.Unsubscribe<string>();
+                            adapter.Bus.Unsubscribe<string>().Wait();
                             break;
 
                         case 'c':
                             Console.WriteLine("Publishing!");
-                            adapter.Bus.Publish(string.Format("Greetings to subscribers from {0}", endpointName));
+                            adapter.Bus.Publish(string.Format("Greetings to subscribers from {0}", endpointName)).Wait();
                             break;
 
                         case 'q':
