@@ -1,0 +1,52 @@
+﻿using System;
+using System.Timers;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Migr8;
+using Rebus.Bus;
+using Rebus.CastleWindsor;
+using Rebus.Config;
+using Rebus.Handlers.Reordering;
+using Rebus.Transport.Msmq;
+using UnitOfWork.Handlers;
+using Options = Migr8.Options;
+
+namespace UnitOfWork
+{
+    class Program
+    {
+        static void Main()
+        {
+            Migrate.Database("database", options: new Options().UseVersionTableName("__DatabaseVersion"));
+
+            using (var container = new WindsorContainer())
+            {
+                // run Windsor installers - they're in the UnitOfWork.Installers namespace
+                container.Install(FromAssembly.This());
+
+                Configure.With(new CastleWindsorContainerAdapter(container))
+                    .Transport(t => t.UseMsmq("uow.test"))
+                    .Options(o => o.SpecifyOrderOfHandlers()
+                        .First<InsertRowsIntoDatabase>()
+                        .Then<FailSometimes>())
+                    .Start();
+
+                using (var timer = new Timer(3000))
+                {
+                    timer.Elapsed += (o, ea) => SendStringToSelf(container);
+                    timer.Start();
+
+                    Console.WriteLine("Press ENTER to quit");
+                    Console.ReadLine();
+                }
+            }
+        }
+
+        static void SendStringToSelf(IWindsorContainer container)
+        {
+            var bus = container.Resolve<IBus>();
+            var message = string.Format("The time is {0:T}", DateTime.Now);
+            bus.SendLocal(message).Wait();
+        }
+    }
+}
