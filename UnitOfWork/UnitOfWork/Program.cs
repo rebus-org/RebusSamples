@@ -26,9 +26,15 @@ namespace UnitOfWork
 
                 Configure.With(new CastleWindsorContainerAdapter(container))
                     .Transport(t => t.UseMsmq("uow.test"))
-                    .Options(o => o.SpecifyOrderOfHandlers()
-                        .First<InsertRowsIntoDatabase>()
-                        .Then<FailSometimes>())
+                    .Options(o =>
+                    {
+                        // run the potentially failing handler last to demonstrate
+                        // that the uow is not committed, even though the error
+                        // happes after the insert
+                        o.SpecifyOrderOfHandlers()
+                            .First<InsertRowsIntoDatabase>()
+                            .Then<FailSometimes>();
+                    })
                     .Start();
 
                 using (var timer = new Timer(1000))

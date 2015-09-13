@@ -19,13 +19,18 @@ namespace UnitOfWork.Handlers
 
         public async Task Handle(string message)
         {
+            var hashCode = message.GetHashCode();
+            var remainder = hashCode % Modulo;
+
+            // just insert the received message, its hash code, and the remainder into the db
+
             using (var command = _connection.CreateCommand())
             {
                 command.Transaction = _currentTransaction;
                 command.CommandText = @"INSERT INTO [ReceivedStrings] ([Text], [Hash], [Remainder]) VALUES (@text, @hash, @remainder)";
                 command.Parameters.Add("text", SqlDbType.NVarChar).Value = message;
-                command.Parameters.Add("hash", SqlDbType.Int).Value = message.GetHashCode();
-                command.Parameters.Add("remainder", SqlDbType.Int).Value = message.GetHashCode()%Modulo;
+                command.Parameters.Add("hash", SqlDbType.Int).Value = hashCode;
+                command.Parameters.Add("remainder", SqlDbType.Int).Value = remainder;
                 await command.ExecuteNonQueryAsync();
             }
         }
