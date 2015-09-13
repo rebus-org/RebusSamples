@@ -6,6 +6,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Rebus.Transport;
+#pragma warning disable 1998
 
 namespace UnitOfWork.Installers
 {
@@ -58,11 +59,7 @@ namespace UnitOfWork.Installers
                     var sqlConnection = new SqlConnection(connectionString);
                     sqlConnection.Open();
 
-                    transactionContext.OnDisposed(() =>
-                    {
-                        Console.WriteLine("DISPOWWWWWWW");
-                        sqlConnection.Dispose();
-                    });
+                    transactionContext.OnDisposed(() => sqlConnection.Dispose());
 
                     return sqlConnection;
                 });

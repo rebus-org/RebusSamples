@@ -31,7 +31,7 @@ namespace UnitOfWork
                         .Then<FailSometimes>())
                     .Start();
 
-                using (var timer = new Timer(3000))
+                using (var timer = new Timer(1000))
                 {
                     timer.Elapsed += (o, ea) => SendStringToSelf(container);
                     timer.Start();
