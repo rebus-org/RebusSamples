@@ -7,6 +7,7 @@ Check out
 * [Pub/sub sample](/PubSub) - demonstrates how pub/sub can be wired up
 * [Integration sample](/Integration) - demonstrates how calling an external web service can be made more robust
 * [Unit of work sample](/UnitOfWork) - demonstrates how a proper unit of work can be hooked into Rebus in all the right places
+* [Rabbit MQ topics sample](/RabbitTopics) - demonstrates how Rebus' low-level topics API can be used with the RabbitMQ transport to do pub/sub with wildcards
 
 ### Scaleout samples
 
