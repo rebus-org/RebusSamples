@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using Messages;
 using Rebus.Activation;
 using Rebus.Config;
@@ -17,12 +17,14 @@ namespace Consumer
                 adapter.Handle<Job>(async job =>
                 {
                     Console.WriteLine("Processing job {0}", job.JobNumber);
-                    Thread.Sleep(100);
+
+                    await Task.Delay(200);
                 });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
                     .Transport(t => t.UseRabbitMq("amqp://localhost", "consumer"))
+                    .Options(o => o.SetMaxParallelism(5))
                     .Start();
 
                 adapter.Bus.Subscribe<Job>().Wait();
