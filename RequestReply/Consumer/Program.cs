@@ -10,18 +10,24 @@ namespace Consumer
 {
     class Program
     {
+        const string ConnectionString = "server=.; database=rebus; trusted_connection=true";
+
         static void Main()
         {
             using (var adapter = new BuiltinHandlerActivator())
             {
                 adapter.Handle<Job>(async (bus, job) =>
                 {
-                    await bus.Reply(new Reply(job.KeyChar, Process.GetCurrentProcess().Id));
+                    var keyChar = job.KeyChar;
+                    var processId = Process.GetCurrentProcess().Id;
+                    var reply = new Reply(keyChar, processId);
+
+                    await bus.Reply(reply);
                 });
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Warn))
-                    .Transport(t => t.UseSqlServer("server=.; database=rebus; trusted_connection=true", "Messages", "consumer.input"))
+                    .Transport(t => t.UseSqlServer(ConnectionString, "Messages", "consumer.input"))
                     .Start();
 
                 Console.WriteLine("Press ENTER to quit");

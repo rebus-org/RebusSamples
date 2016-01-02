@@ -16,6 +16,7 @@ namespace Producer
         {
             using (var adapter = new BuiltinHandlerActivator())
             {
+
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
                     .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://localhost"))

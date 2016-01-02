@@ -38,8 +38,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Rebus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rebus.0.98.8\lib\NET45\Rebus.dll</HintPath>
+      <HintPath>..\packages\Rebus.0.99.23\lib\NET45\Rebus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
