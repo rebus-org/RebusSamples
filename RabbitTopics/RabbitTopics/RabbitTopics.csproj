@@ -36,11 +36,11 @@
       <HintPath>..\packages\RabbitMQ.Client.3.5.6\lib\net40\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="Rebus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.0.99.9\lib\NET45\Rebus.dll</HintPath>
+      <HintPath>..\packages\Rebus.0.99.23\lib\NET45\Rebus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Rebus.RabbitMq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.RabbitMq.0.99.9\lib\NET45\Rebus.RabbitMq.dll</HintPath>
+      <HintPath>..\packages\Rebus.RabbitMq.0.99.23\lib\NET45\Rebus.RabbitMq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
