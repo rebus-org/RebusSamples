@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Rebus Web Host Demo</title>
+    <style>
+        body {
+            font-family: "Trebuchet MS", Helvetica, sans-serif
+        }
+    </style>
+</head>
+<body>
+<h1>Hello dear friend!</h1>
+    <div id="greeting"></div>
+<img src="https://raw.githubusercontent.com/rebus-org/Rebus/master/artwork/little_rebusbus2_copy-500x500.png"/>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function reload() {
+            $.getJSON("/api/hello")
+                .then(function(result) {
+                    $("#greeting").text(result.message);
+                });
+        }
+
+        setInterval(reload, 200);
+    });
+</script>
+</html>
