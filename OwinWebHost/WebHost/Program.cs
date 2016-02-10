@@ -15,7 +15,7 @@ namespace WebHost
 {
     class Program
     {
-        const string ListeUrl = "http://localhost:3000";
+        const string ListenUrl = "http://localhost:3000";
 
         static void Main()
         {
@@ -29,20 +29,24 @@ namespace WebHost
                     .Transport(t => t.UseInMemoryTransport(new InMemNetwork(), "owin-test"))
                     .Options(o =>
                     {
-                        o.AddWebHost(ListeUrl, app =>
+                        // add the web host
+                        o.AddWebHost(ListenUrl, app =>
                         {
+                            // serve web application out of the configured base directory
                             app.UseFileServer(new FileServerOptions
                             {
                                 FileSystem = new PhysicalFileSystem(webAppBaseDir),
                                 DefaultFilesOptions = { DefaultFileNames = { "index.html" } }
                             });
 
+                            // host a simple API
                             app.Map("/api/hello", a => a.Use(GetTimedGreeting));
                         });
                     })
                     .Start();
 
-                Process.Start(ListeUrl);
+                // invoke default browser and navigate to the URL
+                Process.Start(ListenUrl);
 
                 Console.WriteLine("Press ENTER to quit");
                 Console.ReadLine();
