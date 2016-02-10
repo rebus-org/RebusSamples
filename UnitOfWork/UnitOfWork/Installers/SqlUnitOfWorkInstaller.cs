@@ -42,7 +42,7 @@ namespace UnitOfWork.Installers
                 {
                     var sqlConnection = kernel.Resolve<SqlConnection>();
                     var transaction = sqlConnection.BeginTransaction();
-                    
+
                     transactionContext.OnCommitted(async () => transaction.Commit());
                     
                     return transaction;
