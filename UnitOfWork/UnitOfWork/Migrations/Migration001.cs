@@ -1,5 +1,4 @@
 ﻿using Migr8;
-using Migr8.Internal;
 
 namespace UnitOfWork.Migrations
 {

@@ -9,7 +9,6 @@ using Rebus.Config;
 using Rebus.Handlers.Reordering;
 using Rebus.Transport.Msmq;
 using UnitOfWork.Handlers;
-using Options = Migr8.Options;
 
 namespace UnitOfWork
 {
@@ -17,7 +16,7 @@ namespace UnitOfWork
     {
         static void Main()
         {
-            Migrate.Database("database", options: new Options().UseVersionTableName("__DatabaseVersion"));
+            Database.Migrate("database", Migr8.Migrations.FromThisAssembly());
 
             using (var container = new WindsorContainer())
             {
