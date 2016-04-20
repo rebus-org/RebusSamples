@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CA68E342-92F7-4363-8799-5C0231D532EA}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -18,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubSub.Messages", "PubSub.Messages\PubSub.Messages.csproj", "{289B486F-B273-4C1B-82D4-4B4AB98B1942}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{644DF104-60EE-4E98-8E72-2428E4519698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{644DF104-60EE-4E98-8E72-2428E4519698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{644DF104-60EE-4E98-8E72-2428E4519698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289B486F-B273-4C1B-82D4-4B4AB98B1942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289B486F-B273-4C1B-82D4-4B4AB98B1942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289B486F-B273-4C1B-82D4-4B4AB98B1942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289B486F-B273-4C1B-82D4-4B4AB98B1942}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

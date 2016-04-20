@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
+using PubSub.Messages;
 using Rebus.Activation;
 using Rebus.Config;
-using Rebus.Extensions;
 using Rebus.Logging;
 using Rebus.Persistence.FileSystem;
 using Rebus.Transport.Msmq;
@@ -37,15 +37,15 @@ q) Quit");
                     switch (keyChar)
                     {
                         case 'a':
-                            activator.Bus.Publish("Hello there, I'm a publisher!").Wait();
+                            activator.Bus.Publish(new StringMessage("Hello there, I'm a publisher!")).Wait();
                             break;
 
                         case 'b':
-                            activator.Bus.Publish(DateTime.Now).Wait();
+                            activator.Bus.Publish(new DateTimeMessage(DateTime.Now)).Wait();
                             break;
 
                         case 'c':
-                            activator.Bus.Publish(DateTime.Now - startupTime).Wait();
+                            activator.Bus.Publish(new TimeSpanMessage(DateTime.Now - startupTime)).Wait();
                             break;
 
                         case 'q':
