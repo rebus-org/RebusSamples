@@ -40,7 +40,7 @@ namespace WebHost
                             });
 
                             // host a simple API
-                            app.Map("/api/hello", a => a.Use(GetTimedGreeting));
+                            app.Map("/api/hello", a => a.Run(GetTimedGreeting));
                         });
                     })
                     .Start();
@@ -53,11 +53,11 @@ namespace WebHost
             }
         }
 
-        static async Task GetTimedGreeting(IOwinContext context, Func<Task> next)
+        static async Task GetTimedGreeting(IOwinContext context)
         {
             var response = context.Response;
             response.ContentType = "application/json;charset=utf-8";
-            var jsonText = @"{""message"": ""The time is " + DateTime.Now.ToString("hh:mm:ss") + @" on the server""}";
+            var jsonText = $@"{{""message"": ""The time is {DateTime.Now:hh:mm:ss} on the server""}}";
             await response.WriteAsync(jsonText);
         }
     }
