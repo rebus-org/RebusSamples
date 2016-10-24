@@ -4,7 +4,7 @@ using Messages;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transport.SqlServer;
+using Rebus.SqlServer.Transport;
 
 namespace Consumer
 {
@@ -24,7 +24,11 @@ namespace Consumer
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
                     .Transport(t => t.UseSqlServer("server=.; initial catalog=rebus; integrated security=true", "Messages", "consumer"))
-                    .Options(o => o.SetNumberOfWorkers(1).SetMaxParallelism(20))
+                    .Options(o =>
+                    {
+                        o.SetNumberOfWorkers(1);
+                        o.SetMaxParallelism(20);
+                    })
                     .Start();
 
                 Console.WriteLine("Consumer listening - press ENTER to quit");

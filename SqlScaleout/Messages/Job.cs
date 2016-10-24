@@ -2,6 +2,11 @@
 {
     public class Job
     {
-        public int JobNumber { get; set; }
+        public Job(int jobNumber)
+        {
+            JobNumber = jobNumber;
+        }
+
+        public int JobNumber { get; }
     }
 }

@@ -7,7 +7,7 @@ using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Routing.TypeBased;
-using Rebus.Transport.SqlServer;
+using Rebus.SqlServer.Transport;
 
 namespace Producer
 {
@@ -24,7 +24,7 @@ namespace Producer
                     .Start();
 
                 var keepRunning = true;
-                
+
                 while (keepRunning)
                 {
                     Console.WriteLine(@"a) Send 10 jobs
@@ -59,7 +59,7 @@ q) Quit");
             Console.WriteLine("Publishing {0} jobs", numberOfJobs);
 
             var sendTasks = Enumerable.Range(0, numberOfJobs)
-                .Select(i => new Job { JobNumber = i })
+                .Select(i => new Job(i))
                 .Select(job => bus.Send(job))
                 .ToArray();
 
