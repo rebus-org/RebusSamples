@@ -4,10 +4,8 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Migr8;
 using Rebus.Bus;
-using Rebus.CastleWindsor;
 using Rebus.Config;
 using Rebus.Handlers.Reordering;
-using Rebus.Transport.Msmq;
 using UnitOfWork.Handlers;
 
 namespace UnitOfWork
@@ -50,7 +48,7 @@ namespace UnitOfWork
         static void SendStringToSelf(IWindsorContainer container)
         {
             var bus = container.Resolve<IBus>();
-            var message = string.Format("The time is {0:T}", DateTime.Now);
+            var message = $"The time is {DateTime.Now:T}";
             bus.SendLocal(message).Wait();
         }
     }
