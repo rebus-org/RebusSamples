@@ -4,7 +4,7 @@ using Consumer.Messages;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Transport.SqlServer;
+using Rebus.SqlServer.Transport;
 
 namespace Consumer
 {

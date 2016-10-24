@@ -4,7 +4,7 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Routing.TypeBased;
-using Rebus.Transport.SqlServer;
+using Rebus.SqlServer.Transport;
 
 namespace Producer
 {
@@ -16,7 +16,7 @@ namespace Producer
             {
                 adapter.Handle<Reply>(async reply =>
                 {
-                    Console.WriteLine("Got reply '{0}' (from OS process {1})", reply.KeyChar, reply.OsProcessId);
+                    await Console.Out.WriteLineAsync($"Got reply '{reply.KeyChar}' (from OS process {reply.OsProcessId})");
                 });
 
                 Configure.With(adapter)
