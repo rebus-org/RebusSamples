@@ -4,7 +4,6 @@ Check out
 
 * [Time printer](/TimePrinter) - simple program that sends a message to itself every second
 * [Email sender](/EmailSender) - simple email sender that functions as a good example on how to queue up work
-* [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
 * [Pub/sub sample](/PubSub) - demonstrates how pub/sub can be wired up
 * [Integration sample](/Integration) - demonstrates how calling an external web service can be made more robust
 * [Unit of work sample](/UnitOfWork) - demonstrates how a proper unit of work can be hooked into Rebus in all the right places
@@ -20,3 +19,4 @@ Check out
 
 * [User context sample](/old/UserContextHeaders) - shows how an ambient user context can be passed along with messages 
 * [MSMQ scaleout](/old/MsmqScaleout) - demonstrates how work can be distributed among a cluster of workers when working with MSMQ and Rebus' MSMQ distributor
+* [Showdown](/old/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
