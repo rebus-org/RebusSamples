@@ -5,7 +5,6 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Persistence.FileSystem;
-using Rebus.Transport.Msmq;
 
 namespace PubSub.Publisher
 {

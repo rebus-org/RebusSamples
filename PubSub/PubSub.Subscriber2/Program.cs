@@ -6,7 +6,6 @@ using Rebus.Config;
 using Rebus.Handlers;
 using Rebus.Logging;
 using Rebus.Routing.TypeBased;
-using Rebus.Transport.Msmq;
 
 namespace PubSub.Subscriber2
 {
