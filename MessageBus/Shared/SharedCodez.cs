@@ -3,8 +3,6 @@ using System.Reflection;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.Persistence.SqlServer;
-using Rebus.Transport.Msmq;
 
 #pragma warning disable 1998
 
