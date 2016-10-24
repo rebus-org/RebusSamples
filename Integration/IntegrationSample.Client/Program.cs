@@ -3,11 +3,9 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using IntegrationSample.Client.Handlers;
 using IntegrationSample.IntegrationService.Messages;
-using Rebus.CastleWindsor;
 using Rebus.Config;
 using Rebus.Handlers;
 using Rebus.Routing.TypeBased;
-using Rebus.Transport.Msmq;
 
 namespace IntegrationSample.Client
 {

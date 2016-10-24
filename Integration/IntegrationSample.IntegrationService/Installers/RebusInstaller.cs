@@ -1,10 +1,8 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Rebus.CastleWindsor;
 using Rebus.Config;
 using Rebus.Log4net;
-using Rebus.Transport.Msmq;
 
 namespace IntegrationSample.IntegrationService.Installers
 {
