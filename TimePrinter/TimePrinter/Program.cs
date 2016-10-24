@@ -5,7 +5,6 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Handlers;
 using Rebus.Routing.TypeBased;
-using Rebus.Transport.Msmq;
 
 namespace TimePrinter
 {
