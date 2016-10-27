@@ -1,51 +1,34 @@
-﻿using Rebus.Configuration;
-using Rebus.Logging;
+﻿using Rebus.Config;
+using Rebus.SqlServer.Transport;
 using Rebus.Transports.Showdown.Core;
-using Rebus.Transports.Sql;
 
 namespace Rebus.Transports.Showdown.SqlServer
 {
     public class Program
     {
-        const string SenderInputQueue = "test.showdown.sender";
-        const string ReceiverInputQueue = "test.showdown.receiver";
+        const string QueueName = "test_showdown";
+        private const string TableName = QueueName;
         const string SqlServerConnectionString = "server=.;initial catalog=rebus_test;integrated security=sspi";
 
-        const string MessageTableName = SqlServerMessageQueueConfigurationExtension
-            .DefaultMessagesTableName;
 
         public static void Main()
         {
-            using (var runner = new ShowdownRunner(ReceiverInputQueue))
+            using (var runner = new ShowdownRunner(QueueName))
             {
-                PurgeInputQueue(SenderInputQueue);
-                PurgeInputQueue(ReceiverInputQueue);
+                PurgeInputQueue(QueueName);
 
-                Configure.With(runner.SenderAdapter)
-                         .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                         .Transport(t => t.UseSqlServer(SqlServerConnectionString, SenderInputQueue, "error"))
-                         .MessageOwnership(o => o.Use(runner))
-                         .CreateBus()
+                Configure.With(runner.Adapter)
+                         .Logging(l => l.ColoredConsole())
+                         .Transport(t => t.UseSqlServer(SqlServerConnectionString, TableName,QueueName))
                          .Start();
 
-                Configure.With(runner.ReceiverAdapter)
-                         .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                         .Transport(t => t.UseSqlServer(SqlServerConnectionString, ReceiverInputQueue, "error"))
-                         .MessageOwnership(o => o.Use(runner))
-                         .CreateBus()
-                         .Start();
-
-                runner.Run();
+                runner.Run().Wait();
             }
         }
 
         static void PurgeInputQueue(string inputQueueName)
         {
-            var queue = new SqlServerMessageQueue(SqlServerConnectionString,
-                MessageTableName,
-                inputQueueName);
-            
-            queue.PurgeInputQueue();
+            //purge this later on...
         }
     }
 }

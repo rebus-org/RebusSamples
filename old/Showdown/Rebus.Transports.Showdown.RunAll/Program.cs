@@ -4,9 +4,9 @@
     {
         static void Main()
         {
-            SqlServer.Program.Main();
+            //SqlServer.Program.Main();
             Showndown.Msmq.Program.Main();
-            Showndown.RabbitMq.Program.Main();
+            //Showndown.RabbitMq.Program.Main();
         }
     }
 }

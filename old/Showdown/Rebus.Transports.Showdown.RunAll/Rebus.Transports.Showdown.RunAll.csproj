@@ -56,10 +56,6 @@
       <Project>{321b2eb1-3e2f-4987-993c-4e6ba2af92d7}</Project>
       <Name>Rebus.Transports.Showndown.Msmq</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rebus.Transports.Showndown.RabbitMq\Rebus.Transports.Showndown.RabbitMq.csproj">
-      <Project>{b6b36dd1-9b9f-46bd-b705-6bc36c60d28d}</Project>
-      <Name>Rebus.Transports.Showndown.RabbitMq</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

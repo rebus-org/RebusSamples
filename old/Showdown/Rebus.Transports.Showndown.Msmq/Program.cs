@@ -1,46 +1,37 @@
-﻿using Rebus.Configuration;
-using Rebus.Transports.Msmq;
+﻿using System.Threading.Tasks;
+using Rebus.Config;
 using Rebus.Transports.Showdown.Core;
 using Rebus.Logging;
+using Rebus.Msmq;
+using Rebus.Routing.TypeBased;
 
 namespace Rebus.Transports.Showndown.Msmq
 {
     public class Program
     {
-        const string SenderInputQueue = "test.showdown.sender";
-        const string ReceiverInputQueue = "test.showdown.receiver";
+
+        private const string Queue = "test.showdown";
 
         public static void Main()
         {
-            using (var runner = new ShowdownRunner(ReceiverInputQueue))
+            using (var runner = new ShowdownRunner(Queue))
             {
-                PurgeInputQueue(SenderInputQueue);
-                PurgeInputQueue(ReceiverInputQueue);
+                PurgeInputQueue(Queue);
 
-                Configure.With(runner.SenderAdapter)
-                         .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                         .Transport(t => t.UseMsmq(SenderInputQueue, "error"))
-                         .MessageOwnership(o => o.Use(runner))
-                         .CreateBus()
+                Configure.With(runner.Adapter)
+                         .Logging(l => l.Console())
+                         .Transport(t => t.UseMsmq(Queue))
                          .Start();
 
-                Configure.With(runner.ReceiverAdapter)
-                         .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                         .Transport(t => t.UseMsmq(ReceiverInputQueue, "error"))
-                         .MessageOwnership(o => o.Use(runner))
-                         .CreateBus()
-                         .Start();
 
-                runner.Run();
+                runner.Run().Wait();
+
             }
         }
 
         static void PurgeInputQueue(string inputQueueName)
         {
-            using (var queue = new MsmqMessageQueue(inputQueueName))
-            {
-                queue.PurgeInputQueue();
-            }
+            MsmqUtil.PurgeQueue(inputQueueName);
         }
     }
 }

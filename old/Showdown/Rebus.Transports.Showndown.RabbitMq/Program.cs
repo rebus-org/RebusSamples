@@ -1,7 +1,7 @@
-﻿using Rebus.Configuration;
+﻿using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Transports.Showdown.Core;
-using Rebus.RabbitMQ;
+using Rebus.Routing.TypeBased;
 
 namespace Rebus.Transports.Showndown.RabbitMq
 {
@@ -17,21 +17,17 @@ namespace Rebus.Transports.Showndown.RabbitMq
             {
                 Configure.With(runner.SenderAdapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, SenderInputQueue, "error")
-                        .PurgeInputQueue())
-                    .MessageOwnership(o => o.Use(runner))
-                    .CreateBus()
+                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, SenderInputQueue))
+                    .Routing(c => c.TypeBased())
                     .Start();
 
                 Configure.With(runner.ReceiverAdapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, ReceiverInputQueue, "error")
-                        .PurgeInputQueue())
-                    .MessageOwnership(o => o.Use(runner))
-                    .CreateBus()
+                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, ReceiverInputQueue))
+                    .Routing(c => c.TypeBased())
                     .Start();
 
-                runner.Run();
+                runner.Run().Wait();
             }
         }
     }
