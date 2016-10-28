@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using Rebus.Config;
 using Rebus.Transports.Showdown.Core;
-using Rebus.Logging;
 using Rebus.Msmq;
-using Rebus.Routing.TypeBased;
 
-namespace Rebus.Transports.Showndown.Msmq
+namespace Rebus.Transports.Showdown.Msmq
 {
     public class Program
     {
@@ -14,17 +12,16 @@ namespace Rebus.Transports.Showndown.Msmq
 
         public static void Main()
         {
-            using (var runner = new ShowdownRunner(Queue))
+            using (var runner = new ShowdownRunner())
             {
                 PurgeInputQueue(Queue);
 
                 Configure.With(runner.Adapter)
-                         .Logging(l => l.Console())
+                         .Logging(l => l.None())
                          .Transport(t => t.UseMsmq(Queue))
                          .Start();
 
-
-                runner.Run().Wait();
+                runner.Run(typeof(Program).Namespace).Wait();
 
             }
         }
