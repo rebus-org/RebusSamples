@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Rebus.Activation;
@@ -17,46 +15,13 @@ namespace Rebus.Transports.Showdown.Core
     public class ShowdownRunner : IDisposable
     {
         const int MessageCount = 10000;
-        const int NumberOfWorkers = 15;
+        const int NumberOfWorkers = 5;
 
-        readonly string testShowdownReceiverInputQueue;
         readonly BuiltinHandlerActivator _adapter = new BuiltinHandlerActivator();
-        readonly string resultsFileName;
 
-        public ShowdownRunner(string testShowdownReceiverInputQueue)
-        {
-            // default to no logging
-            this.testShowdownReceiverInputQueue = testShowdownReceiverInputQueue;
-            //resultsFileName = GenerateFileName();
-            //EnsureDirectoryExists(resultsFileName);
-        }
+        public BuiltinHandlerActivator Adapter => _adapter;
 
-        void EnsureDirectoryExists(string fileName)
-        {
-            var dir = Path.GetDirectoryName(fileName);
-            if (Directory.Exists(dir)) return;
-            Directory.CreateDirectory(dir);
-        }
-
-        string GenerateFileName()
-        {
-            string potentialFileName;
-            var counter = 1;
-            do
-            {
-                potentialFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results",
-                                                 string.Format("output-{0}.txt", counter++));
-            } while (File.Exists(potentialFileName));
-
-            return potentialFileName;
-        }
-
-        public BuiltinHandlerActivator Adapter
-        {
-            get { return _adapter; }
-        }
-
-        public async Task Run()
+        public async Task Run(string showdownName)
         {
             try
             {
@@ -75,9 +40,9 @@ namespace Rebus.Transports.Showdown.Core
                     Print(@"----------------------------------------------------------------------
 Running showdown: {0}
 ----------------------------------------------------------------------",
-                        Assembly.GetCallingAssembly()
-                            .GetName()
-                            .Name);
+                        showdownName);
+                           // .GetName()
+                           // .Name);
 
                     var receivedMessageIds = new ConcurrentDictionary<int, int>();
                     var receivedMessages = 0;
@@ -127,9 +92,10 @@ Running showdown: {0}
                     var totalSecondsReceiving = receiverWatch.Elapsed.TotalSeconds;
 
                     Thread.Sleep(2000);
-
+                    printTimer.Stop();
                     Print("Receiving {0} messages took {1:0.0} s ({2:0.0} msg/s)",
                         MessageCount, totalSecondsReceiving, MessageCount / totalSecondsReceiving);
+
                 }
             }
             catch (Exception e)
@@ -141,32 +107,31 @@ Running showdown: {0}
         void Print(string message, params object[] objs)
         {
             Console.WriteLine(message, objs);
-            //File.AppendAllText(resultsFileName, string.Format(message, objs) + Environment.NewLine);
         }
 
         public void Dispose()
         {
-            if (disposing || disposed) return;
+            if (_disposing || _disposed) return;
 
             lock (this)
             {
-                if (disposing || disposed) return;
+                if (_disposing || _disposed) return;
 
                 try
                 {
-                    disposing = true;
+                    _disposing = true;
                     _adapter.Dispose();
                 }
                 finally
                 {
-                    disposed = true;
-                    disposing = false;
+                    _disposed = true;
+                    _disposing = false;
                 }
             }
         }
 
-        bool disposed;
-        bool disposing;
+        bool _disposed;
+        bool _disposing;
 
        
     }
