@@ -1,33 +1,24 @@
 ﻿using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Transports.Showdown.Core;
-using Rebus.Routing.TypeBased;
 
-namespace Rebus.Transports.Showndown.RabbitMq
+namespace Rebus.Transports.Showdown.RabbitMq
 {
     public class Program
     {
-        const string SenderInputQueue = "test.showdown.sender";
-        const string ReceiverInputQueue = "test.showdown.receiver";
+        const string Queue = "test.showdown";
         const string RabbitMqConnectionString = "amqp://localhost";
 
         public static void Main()
         {
-            using (var runner = new ShowdownRunner(ReceiverInputQueue))
+            using (var runner = new ShowdownRunner())
             {
-                Configure.With(runner.SenderAdapter)
+                Configure.With(runner.Adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, SenderInputQueue))
-                    .Routing(c => c.TypeBased())
+                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, Queue))
                     .Start();
 
-                Configure.With(runner.ReceiverAdapter)
-                    .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMq(RabbitMqConnectionString, ReceiverInputQueue))
-                    .Routing(c => c.TypeBased())
-                    .Start();
-
-                runner.Run().Wait();
+                runner.Run(typeof(Program).Namespace).Wait();
             }
         }
     }
