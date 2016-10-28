@@ -1,4 +1,5 @@
-﻿using Rebus.Config;
+﻿using System;
+using Rebus.Config;
 using Rebus.SqlServer.Transport;
 using Rebus.Transports.Showdown.Core;
 
@@ -13,22 +14,21 @@ namespace Rebus.Transports.Showdown.SqlServer
 
         public static void Main()
         {
-            using (var runner = new ShowdownRunner(QueueName))
+            using (var runner = new ShowdownRunner())
             {
                 PurgeInputQueue(QueueName);
 
                 Configure.With(runner.Adapter)
-                         .Logging(l => l.ColoredConsole())
+                         .Logging(l => l.None())
                          .Transport(t => t.UseSqlServer(SqlServerConnectionString, TableName,QueueName))
                          .Start();
 
-                runner.Run().Wait();
+                runner.Run(typeof(Program).Namespace).Wait();
             }
         }
 
         static void PurgeInputQueue(string inputQueueName)
         {
-            //purge this later on...
         }
     }
 }
