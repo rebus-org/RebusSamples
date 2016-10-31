@@ -1,4 +1,4 @@
-## Sagas
+# Sagas
 
 This sample demonstrates how sagas can be made with Rebus.
 
@@ -14,24 +14,34 @@ Sagas don't do anything that you could not have built yourself with a database a
 
 in a meaningful way that is also robust.
 
-### How to run the demo
+
+## How to run the demo
+
+Simply start the following three console applications:
+
+* Client 
+* SagaDemo
+* Logger
+
+and use Client to publish events for different case numbers, using Logger to simply see which events get published.
+
+
+### Prerequisites
+
+* Local SQL Server with a `rebus_sagademo` table, accessible to the current user
+* MSMQ must be installed
 
 The `Common` project has an extension method, `ConfigureEndpoint`, which is used throughout in ordert to configure each Rebus endpoint. The method accepts an `EndpointRole` parameter,
 which is used by the extension method to decide which things to configure for that particular endpoint.
 
-Unless you change this method, you will need a local SQL Server with a database named `rebus_sagademo` and MSMQ installed.
+If you want to reconfigure the demo (i.e. switch to use RabbitMQ to transport messages, PostgreSQL to store sagas, subscriptions, and timeouts, etc.) just rewrite the `ConfigureEndpoint` method.
 
-You should then start the following three console applications:
 
-* Client
-* SagaDemo
-* Logger
 
-### What does the demo show?
 
-The demo shows an imaginary scenario in a domain where we have cases. 
+## What does the demo show?
 
-A case is identified by its case number.
+The demo shows an imaginary scenario in a domain where we have cases, and each case is identified by its case number.
 
 A case is about some amount of money that needs to be paid out at some point in time, but the payout can only be made when the following things have happened:
 
@@ -39,7 +49,13 @@ A case is about some amount of money that needs to be paid out at some point in 
 * the taxes part has been deducted
 * the recipient of the payout has indicated which way she/he wishes to receive the payout
 
-When these three things have happened (i.e. we have received `AmountsCalculated`, `TaxesCalculated`, and `PayoutMethodSelected` events for a case), we must publish an appropriate `PayoutReady` event.
+We are event-driven, so each of these three business events have a correponding event in our code:
+
+* `AmountsCalculated`
+* `TaxesCalculated`
+* `PayoutMethodSelected`
+
+When these three things have happened (i.e. we have received one of each type of event for a particular case number), we must publish an appropriate `PayoutReady` event.
 
 One possible sequence could be this:
 
@@ -110,6 +126,10 @@ state machine is represented by the `(A, T, P)` tuple shown in the box, we could
 
 Now, obviously we will have to track the three events for each case number that the process runs for. This means that an instance of the state machine must be stored for each case number.
 
+
+
+### Modeling the saga with Rebus
+
 With Rebus, this saga's state could be coded like this:
 
     public class PayoutSagaData : SagaData
@@ -142,5 +162,19 @@ and then the saga could be defined like this:
 		// (....)
 	}
 
-Note how the `CorrelateMessages` method sets up correlation between incoming messages by specifying which field of the saga data's state to retrieve an instance by,
-and how `IAmInitiatedBy` is used instead of the ordinary `IHandleMessages` meaning that all three messages will result in a new instance of the saga if an existing instance could not be found.
+Note how the `CorrelateMessages` method sets up correlation between incoming messages by specifying which field of the saga data's state to retrieve a saga instance by,
+and how `IAmInitiatedBy` is used instead of the ordinary `IHandleMessages` to indicate that a new saga instance can be created in the event that no existing instance
+could be found for an incoming message.
+
+
+### Ensuring that the process ends
+
+In the real world, things can go wrong - either the tax calculation service could be broken, or the person does not react to our requests for choosing a payout method.
+
+Either way, _we should almost always use a timeout when we create a saga_ to offer a way out in case the saga halts, whether it is for technical or non-technical reasons.
+
+If you look at the `PayoutSaga`  in this sample, you will see that the saga orders a `VerifyComplete` messages in 20 seconds from having received the first of the three events,
+ensuring that the saga gets a chance to evaluate itself after a while, to see if it was completed.
+
+In this case, completion of the saga results in its deletion (by calling `MarkAsComplete()`), in which case the incoming `VerifyComplete` message cannot be correlated with a saga instance,
+which in turn results in the message simply being ignored.
