@@ -10,6 +10,7 @@ Check out
 * [Rabbit MQ topics sample](/RabbitTopics) - demonstrates how Rebus' low-level topics API can be used with the RabbitMQ transport to do pub/sub with wildcards
 * [OWIN Web Host](/OwinWebHost) - demonstrates how Rebus can be configured to host an OWIN endpoint
 * [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
+* [Sagas](/Sagas) - sample that shows a saga
 
 ### Scaleout samples
 
