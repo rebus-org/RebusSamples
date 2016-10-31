@@ -19,14 +19,9 @@ namespace Producer
             {
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t =>
-                    {
-                        t.UsePostgreSql(
+                    .Transport(t => t.UsePostgreSqlAsOneWayClient(
                             "server=localhost;port=5433;database=rebus2_test;user id=test; password=test;maximum pool size=30",
-                            "messages", null);
-                        OneWayClientBackdoor.ConfigureOneWayClient(t);
-                        
-                    })
+                            "messages"))
                     .Routing(r => r.TypeBased().MapAssemblyOf<Job>("consumer"))
                     .Start();
 
