@@ -49,16 +49,16 @@ One possible sequence could be this:
                                          |
                                          |
      AmountsCalculated (case: 123)       |
-    ------------------------------------>A (process begins)
-                                         U
-                                         U 
-     TaxesCalculated (case: 123)         U 
-    ------------------------------------>U
-                                         U
-                                         U
-     PayoutMethodSelected (case: 123)    U
-    ------------------------------------>U   PayoutReady (case: 123)
-                                         Y--------------------------->
+    ------------------------------------>I (process begins)
+                                         I
+                                         I 
+     TaxesCalculated (case: 123)         I 
+    ------------------------------------>I
+                                         I
+                                         I
+     PayoutMethodSelected (case: 123)    I
+    ------------------------------------>I   PayoutReady (case: 123)
+                                         I--------------------------->
                                          X (process terminates)
                                          |
                                          |
@@ -69,28 +69,28 @@ In the real world, messages can be delayed for different reasons. When you want 
 
 This means that we must support a state machine with transitions for all possible permutations of the tree events. We could draw it like this:
 
-                                                             PayoutMethodSelected
-                                                 ----------------------------------------------
-                                                 |                                            |
-                                            +-------+                          +-------+      |
-                         AmountsCalculated  | A: 1  |  TaxesCalculated         | A: 1  |      | PayoutMethodSelected
-                 -------------------------->| T: 0  |------------------------->| T: 1  |------)------------------------
-                 |                          | P: 0  |                      |   | P: 0  |      |                        |
-                 |                          +-------+   AmountsCalculated  |   +-------+      |                        |
-                 |                                     ---------------------                  |                        |
-                 |                                     |                                      |                        V
-             +-------+                      +-------+---                       +-------+      |                     +-------+
-      Start  | A: 0  |   TaxesCalculated    | A: 0  | PayoutMethodSelected     | A: 0  |      |  AmountsCalculated  | A: 1  |  End
-    O------->| T: 0  |--------------------->| T: 1  |------------------------->| T: 1  |------)---------------------| T: 1  |------>Ø
-             | P: 0  |                      | P: 0  |                      |   | P: 1  |      |                     | P: 1  |
-             +-------+                      +-------+    TaxesCalculated   |   +-------+      |                     +-------+
-                 |                                     ---------------------       ___________|                        A
-                 |                                     |                           V                                   |
-                 |                          +-------+---                       +-------+                               |
-                 |    PayoutMethodSelected  | A: 0  |  AmountsCalculated       | A: 1  |      TaxesCalculated          |
-                 -------------------------->| T: 0  |------------------------->| T: 0  |-------------------------------
-                                            | P: 1  |                          | P: 1  |
-                                            +-------+                          +-------+
+                                                           PayoutMethodSelected
+                                               -------------------------------------------
+                                               |                                         |
+                                          +-------+                          +-------+   |
+                       AmountsCalculated  | A: 1  |  TaxesCalculated         | A: 1  |   | PayoutMethodSelected
+                 ------------------------>| T: 0  |------------------------->| T: 1  |---)------------------------
+                 |                        | P: 0  |                      |   | P: 0  |   |                        |
+                 |                        +-------+   AmountsCalculated  |   +-------+   |                        |
+                 |                                   ---------------------               |                        |
+                 |                                   |                                   |                        V
+             +-------+                    +-------+---                       +-------+   |                     +-------+
+      Start  | A: 0  | TaxesCalculated    | A: 0  | PayoutMethodSelected     | A: 0  |   |  AmountsCalculated  | A: 1  |  End
+    O------->| T: 0  |------------------->| T: 1  |------------------------->| T: 1  |---)---------------------| T: 1  |------>Ø
+             | P: 0  |                    | P: 0  |                      |   | P: 1  |   |                     | P: 1  |
+             +-------+                    +-------+    TaxesCalculated   |   +-------+   |                     +-------+
+                 |                                   ---------------------       ________|                        A
+                 |                                   |                           V                                |
+                 |                        +-------+---                       +-------+                            |
+                 |  PayoutMethodSelected  | A: 0  |  AmountsCalculated       | A: 1  |   TaxesCalculated          |
+                 ------------------------>| T: 0  |------------------------->| T: 0  |----------------------------
+                                          | P: 1  |                          | P: 1  |
+                                          +-------+                          +-------+
 
 with an ASCII-adaptation of the formal UML State Diagram notation, or we could simply spot the pattern that we apparently remember which of the three events we have seen, finishing the state machine when we have received all three:
 
