@@ -2,9 +2,9 @@
 
 This sample demonstrates how sagas can be made with Rebus.
 
-Sagas (also known in the literature as "process managers") are stateful services. You can think of them as state machines whose transitions are driven by messages.
+Sagas (also known in the literature as "[process managers](http://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)") are stateful services. You can think of them as state machines whose transitions are driven by messages.
 
-With Rebus, you build a saga by creating a handler that is derived from the generic `Saga&lt;TSagaData&gt;` class, closing it with the type of your saga data.
+With Rebus, you build a saga by creating a handler that is derived from the generic `Saga&lt;TSagaData&gt;` class, closing it with the type of your saga data. The "saga data" is the chunk of state, which gets automatically saved between handling messages, and thus represents the state of the state machine.
 
 Sagas don't do anything that you could not have built yourself with a database and ordinary message handlers. They just save you the time it takes to handle
 
@@ -92,7 +92,8 @@ This means that we must support a state machine with transitions for all possibl
                                           | P: 1  |                          | P: 1  |
                                           +-------+                          +-------+
 
-with an ASCII-adaptation of the formal UML State Diagram notation, or we could simply spot the pattern that we apparently remember which of the three events we have seen, finishing the state machine when we have received all three:
+with an ASCII-adaptation of the formal UML State Diagram notation, or we could simply spot the pattern that we apparently remember which of the three events we have seen, finishing the state machine when we have received all three. If we accept that the state of the
+state machine is represented by the `(A, T, P)` tuple shown in the box, we could represent the machine like this:
 
          AmountsCalculated
           TaxesCalculated
@@ -108,3 +109,38 @@ with an ASCII-adaptation of the formal UML State Diagram notation, or we could s
              +-------+
 
 Now, obviously we will have to track the three events for each case number that the process runs for. This means that an instance of the state machine must be stored for each case number.
+
+With Rebus, this saga's state could be coded like this:
+
+    public class PayoutSagaData : SagaData
+    {
+        public string CaseNumber { get; set; }
+
+        public bool AmountsCalculated { get; set; }
+        public bool TaxesCalculated { get; set; }
+        public bool PayoutMethodSelected { get; set; }
+
+        public bool IsDone => AmountsCalculated
+                              && TaxesCalculated
+                              && PayoutMethodSelected;
+    }
+
+and then the saga could be defined like this:
+
+    public class PayoutSaga : Saga<PayoutSagaData>, 
+		IAmInitiatedBy<AmountsCalculated>, 
+		IAmInitiatedBy<TaxesCalculated>, 
+		IAmInitiatedBy<PayoutMethodSelected>
+    {
+        protected override void CorrelateMessages(ICorrelationConfig<PayoutSagaData> config)
+        {
+            config.Correlate<AmountsCalculated>(m => m.CaseNumber, d => d.CaseNumber);
+            config.Correlate<TaxesCalculated>(m => m.CaseNumber, d => d.CaseNumber);
+            config.Correlate<PayoutMethodSelected>(m => m.CaseNumber, d => d.CaseNumber);
+        }
+
+		// (....)
+	}
+
+Note how the `CorrelateMessages` method sets up correlation between incoming messages by specifying which field of the saga data's state to retrieve an instance by,
+and how `IAmInitiatedBy` is used instead of the ordinary `IHandleMessages` meaning that all three messages will result in a new instance of the saga if an existing instance could not be found.
