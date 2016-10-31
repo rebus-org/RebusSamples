@@ -14,8 +14,8 @@ Check out
 ### Scaleout samples
 
 * [Rabbit scaleout](/RabbitScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with RabbitMQ
-* [SQL scaleout](/SqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with SQL Server as the transport
-* [SQL scaleout](/PostgreSqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with PostgreSQL as the transport
+* [SQL Server scaleout](/SqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with SQL Server as the transport
+* [PostgreSQL scaleout](/PostgreSqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with PostgreSQL as the transport
 
 ## Deprecated
 
