@@ -1,5 +1,4 @@
-﻿using System;
-using Rebus.Config;
+﻿using Rebus.Config;
 using Rebus.Transports.Showdown.Core;
 using Rebus.Msmq;
 
@@ -7,8 +6,7 @@ namespace Rebus.Transports.Showdown.Msmq
 {
     public class Program
     {
-
-        private const string Queue = "test.showdown";
+        const string Queue = "test.showdown";
 
         public static void Main()
         {
@@ -17,12 +15,12 @@ namespace Rebus.Transports.Showdown.Msmq
                 PurgeInputQueue(Queue);
 
                 Configure.With(runner.Adapter)
-                         .Logging(l => l.None())
-                         .Transport(t => t.UseMsmq(Queue))
-                         .Start();
+                    .Logging(l => l.None())
+                    .Transport(t => t.UseMsmq(Queue))
+                    .Options(o => o.SetMaxParallelism(20))
+                    .Start();
 
                 runner.Run(typeof(Program).Namespace).Wait();
-
             }
         }
 

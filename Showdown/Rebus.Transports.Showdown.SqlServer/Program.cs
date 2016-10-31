@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Data;
+using System.Data.SqlClient;
 using Rebus.Config;
 using Rebus.SqlServer.Transport;
 using Rebus.Transports.Showdown.Core;
@@ -8,9 +9,8 @@ namespace Rebus.Transports.Showdown.SqlServer
     public class Program
     {
         const string QueueName = "test_showdown";
-        private const string TableName = QueueName;
-        const string SqlServerConnectionString = "server=.;initial catalog=rebus_test;integrated security=sspi";
-
+        const string TableName = QueueName;
+        const string SqlServerConnectionString = "server=.; initial catalog=rebus2_test; integrated security=sspi";
 
         public static void Main()
         {
@@ -19,9 +19,10 @@ namespace Rebus.Transports.Showdown.SqlServer
                 PurgeInputQueue(QueueName);
 
                 Configure.With(runner.Adapter)
-                         .Logging(l => l.None())
-                         .Transport(t => t.UseSqlServer(SqlServerConnectionString, TableName,QueueName))
-                         .Start();
+                    .Logging(l => l.None())
+                    .Transport(t => t.UseSqlServer(SqlServerConnectionString, TableName, QueueName))
+                    .Options(o => o.SetMaxParallelism(20))
+                    .Start();
 
                 runner.Run(typeof(Program).Namespace).Wait();
             }
@@ -29,6 +30,16 @@ namespace Rebus.Transports.Showdown.SqlServer
 
         static void PurgeInputQueue(string inputQueueName)
         {
+            using (var connection = new SqlConnection(SqlServerConnectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $"DELETE FROM [{TableName}] WHERE [Recipient] = @recipient";
+                    command.Parameters.Add("recipient", SqlDbType.NVarChar, 200).Value = inputQueueName;
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using Npgsql;
+using NpgsqlTypes;
 using Rebus.Config;
 using Rebus.PostgreSql.Transport;
 using Rebus.Transports.Showdown.Core;
@@ -8,11 +8,9 @@ namespace Rebus.Transports.Showdown.PostgreSql
 {
     public class Program
     {
-
         const string QueueName = "test_showdown";
-        private const string TableName = QueueName;
-        const string PostgresqlConnectionString = "server=localhost;port=5433;database=rebus2_test;user id=test; password=test; Maximum Pool Size=30";
-
+        const string TableName = QueueName;
+        const string PostgresqlConnectionString = "server=localhost;database=rebus2_test;user id=postgres; password=postgres; Maximum Pool Size=30";
 
         public static void Main()
         {
@@ -23,10 +21,8 @@ namespace Rebus.Transports.Showdown.PostgreSql
                 Configure.With(runner.Adapter)
                     .Logging(l => l.None())
                     .Transport(t => t.UsePostgreSql(PostgresqlConnectionString, TableName, QueueName))
+                    .Options(o => o.SetMaxParallelism(20))
                     .Start();
-
-            
-
 
                 runner.Run(typeof(Program).Namespace).Wait();
             }
@@ -34,7 +30,16 @@ namespace Rebus.Transports.Showdown.PostgreSql
 
         static void PurgeInputQueue(string queueName)
         {
-
+            using (var connection = new NpgsqlConnection(PostgresqlConnectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $@"DELETE FROM ""{TableName}"" WHERE ""recipient"" = @recipient;";
+                    command.Parameters.Add("recipient", NpgsqlDbType.Text, 200).Value = queueName;
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

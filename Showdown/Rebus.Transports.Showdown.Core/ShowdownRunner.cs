@@ -41,8 +41,8 @@ namespace Rebus.Transports.Showdown.Core
 Running showdown: {0}
 ----------------------------------------------------------------------",
                         showdownName);
-                           // .GetName()
-                           // .Name);
+                    // .GetName()
+                    // .Name);
 
                     var receivedMessageIds = new ConcurrentDictionary<int, int>();
                     var receivedMessages = 0;
@@ -72,15 +72,15 @@ Running showdown: {0}
 
                     var resetEvent = new ManualResetEvent(false);
 
-                        _adapter.Handle<TestMessage>(async message =>
-                                             {
-                                                 var result = Interlocked.Increment(ref receivedMessages);
-                                                 if (result == MessageCount)
-                                                 {
-                                                     resetEvent.Set();
-                                                 }
-                                                 Interlocked.Increment(ref receivedMessagesCount);
-                                             });
+                    _adapter.Handle<TestMessage>(async message =>
+                    {
+                        var result = Interlocked.Increment(ref receivedMessages);
+                        if (result == MessageCount)
+                        {
+                            resetEvent.Set();
+                        }
+                        Interlocked.Increment(ref receivedMessagesCount);
+                    });
 
 
                     Print("Starting receiver with {0} workers", NumberOfWorkers);
@@ -133,6 +133,6 @@ Running showdown: {0}
         bool _disposed;
         bool _disposing;
 
-       
+
     }
 }
