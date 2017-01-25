@@ -38,13 +38,11 @@
       <HintPath>..\packages\Npgsql.3.1.8\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Rebus, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.2.0.1\lib\NET45\Rebus.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Rebus, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.3.0.1\lib\NET45\Rebus.dll</HintPath>
     </Reference>
-    <Reference Include="Rebus.PostgreSql, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.PostgreSql.2.2.0\lib\NET45\Rebus.PostgreSql.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Rebus.PostgreSql, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.PostgreSql.3.0.0\lib\NET45\Rebus.PostgreSql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
