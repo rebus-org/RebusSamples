@@ -60,13 +60,11 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Rebus, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.2.0.1\lib\NET45\Rebus.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Rebus, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.3.0.1\lib\NET45\Rebus.dll</HintPath>
     </Reference>
-    <Reference Include="Rebus.Owin, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.Owin.2.0.0\lib\NET45\Rebus.Owin.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Rebus.Owin, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.Owin.3.0.0\lib\NET45\Rebus.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

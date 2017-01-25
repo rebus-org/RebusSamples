@@ -6,7 +6,6 @@ using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.RabbitMq;
 
 namespace Producer
 {

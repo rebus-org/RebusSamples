@@ -4,7 +4,6 @@ using Messages;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.RabbitMq;
 
 namespace Consumer
 {
