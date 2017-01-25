@@ -9,14 +9,16 @@ Check out
 * [Unit of work sample](/UnitOfWork) - demonstrates how a proper unit of work can be hooked into Rebus in all the right places
 * [Rabbit MQ topics sample](/RabbitTopics) - demonstrates how Rebus' low-level topics API can be used with the RabbitMQ transport to do pub/sub with wildcards
 * [OWIN Web Host](/OwinWebHost) - demonstrates how Rebus can be configured to host an OWIN endpoint
+* [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
+* [Sagas](/Sagas) - sample that shows a saga
 
 ### Scaleout samples
 
 * [Rabbit scaleout](/RabbitScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with RabbitMQ
-* [SQL scaleout](/SqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with SQL Server as the transport
+* [SQL Server scaleout](/SqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with SQL Server as the transport
+* [PostgreSQL scaleout](/PostgreSqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with PostgreSQL as the transport
 
 ## Deprecated
 
 * [User context sample](/old/UserContextHeaders) - shows how an ambient user context can be passed along with messages 
 * [MSMQ scaleout](/old/MsmqScaleout) - demonstrates how work can be distributed among a cluster of workers when working with MSMQ and Rebus' MSMQ distributor
-* [Showdown](/old/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
