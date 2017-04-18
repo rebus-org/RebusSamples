@@ -5,9 +5,7 @@ namespace UnitOfWork.Migrations
     [Migration(1, "Add table for received strings and their hash codes")]
     public class Migration001 : ISqlMigration
     {
-        public string Sql
-        {
-            get { return @"
+        public string Sql => @"
 
 CREATE TABLE [ReceivedStrings] (
     [Id] INT NOT NULL IDENTITY(1,1),
@@ -17,7 +15,6 @@ CREATE TABLE [ReceivedStrings] (
     CONSTRAINT [PK_ReceivedStrings] PRIMARY KEY CLUSTERED ([Id])
 )
 
-"; }
-        }
+";
     }
 }

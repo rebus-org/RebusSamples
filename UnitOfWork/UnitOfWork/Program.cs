@@ -6,7 +6,10 @@ using Migr8;
 using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Handlers.Reordering;
+using Rebus.Pipeline;
+using Rebus.UnitOfWork;
 using UnitOfWork.Handlers;
+// ReSharper disable ArgumentsStyleNamedExpression
 
 namespace UnitOfWork
 {
@@ -31,6 +34,8 @@ namespace UnitOfWork
                         o.SpecifyOrderOfHandlers()
                             .First<InsertRowsIntoDatabase>()
                             .Then<FailSometimes>();
+
+                        o.EnableUnitOfWork(Create, commitAction: Commit, cleanupAction: Dispose);
                     })
                     .Start();
 
@@ -43,6 +48,23 @@ namespace UnitOfWork
                     Console.ReadLine();
                 }
             }
+        }
+
+        static UnitOfWork Create(IMessageContext context)
+        {
+            var unitOfWork = new UnitOfWork();
+            context.TransactionContext.Items["uow"] = unitOfWork;
+            return unitOfWork;
+        }
+
+        static void Commit(IMessageContext context, UnitOfWork uow)
+        {
+            uow.Commit();
+        }
+
+        static void Dispose(IMessageContext context, UnitOfWork uow)
+        {
+            uow.Dispose();
         }
 
         static void SendStringToSelf(IWindsorContainer container)

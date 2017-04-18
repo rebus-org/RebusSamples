@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.SqlClient;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Rebus.Transport;
+// ReSharper disable ArgumentsStyleLiteral
 #pragma warning disable 1998
 
 namespace UnitOfWork.Installers
@@ -14,17 +14,9 @@ namespace UnitOfWork.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var connectionStringSettings = ConfigurationManager.ConnectionStrings["database"];
-            if (connectionStringSettings == null)
-            {
-                throw new ConfigurationErrorsException("Could not find connection string 'database' in the current app.config!");
-            }
-
-            var connectionString = connectionStringSettings.ConnectionString;
-
             container.Register(
                 Component.For<SqlConnection>()
-                    .UsingFactoryMethod(k => GetSqlConnection(connectionString), managedExternally: true)
+                    .UsingFactoryMethod(k => GetSqlConnection(), managedExternally: true)
                     .LifestyleTransient(),
 
                 Component.For<SqlTransaction>()
@@ -33,36 +25,18 @@ namespace UnitOfWork.Installers
                 );
         }
 
-        static SqlTransaction GetSqlTransaction(IKernel kernel)
+        static SqlConnection GetSqlConnection()
         {
-            var transactionContext = GetTransactionContext();
-
-            return transactionContext
-                .GetOrAdd("current-sql-transaction", () =>
-                {
-                    var sqlConnection = kernel.Resolve<SqlConnection>();
-                    var transaction = sqlConnection.BeginTransaction();
-
-                    transactionContext.OnCommitted(async () => transaction.Commit());
-                    
-                    return transaction;
-                });
+            return GetTransactionContext()
+                .GetOrThrow<UnitOfWork>("uow")
+                .GetConnection();
         }
 
-        static SqlConnection GetSqlConnection(string connectionString)
+        static SqlTransaction GetSqlTransaction(IKernel kernel)
         {
-            var transactionContext = GetTransactionContext();
-
-            return transactionContext
-                .GetOrAdd("current-sql-connection", () =>
-                {
-                    var sqlConnection = new SqlConnection(connectionString);
-                    sqlConnection.Open();
-
-                    transactionContext.OnDisposed(() => sqlConnection.Dispose());
-
-                    return sqlConnection;
-                });
+            return GetTransactionContext()
+                .GetOrThrow<UnitOfWork>("uow")
+                .GetTransaction();
         }
 
         static ITransactionContext GetTransactionContext()

@@ -43,14 +43,17 @@
     <Reference Include="Migr8, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Migr8.0.13.0\lib\NET45\Migr8.dll</HintPath>
     </Reference>
-    <Reference Include="Rebus, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.3.0.1\lib\NET45\Rebus.dll</HintPath>
+    <Reference Include="Rebus, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.3.1.2\lib\NET45\Rebus.dll</HintPath>
     </Reference>
     <Reference Include="Rebus.CastleWindsor, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rebus.Castle.Windsor.3.0.0\lib\NET45\Rebus.CastleWindsor.dll</HintPath>
     </Reference>
     <Reference Include="Rebus.Msmq, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rebus.Msmq.3.0.0\lib\NET45\Rebus.Msmq.dll</HintPath>
+    </Reference>
+    <Reference Include="Rebus.UnitOfWork, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.UnitOfWork.3.0.0\lib\NET45\Rebus.UnitOfWork.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -69,6 +72,7 @@
     <Compile Include="Migrations\Migration001.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
