@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;

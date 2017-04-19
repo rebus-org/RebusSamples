@@ -10,7 +10,11 @@ Every second a timer will send a string to us, which we will handle with a two-h
 * Second handler (`FailSometimes`) throws an exception when the hash code of the string modulo 10 == 0
 
 The `InsertRowsIntoDatabase` handler gets a `SqlConnection` and a `SqlTransaction` injected, which
-it will use to perform its work. Injection of those two is set up in `SqlUnitOfWorkInstaller` which
-demostrates how the two are kept in the transaction context's `Items` collection throughout while
-handling the message, and the `SqlTransaction`'s `Commit` action is enlisted in the commit phase of
-Rebus' transaction context.
+it will use to perform its work. 
+
+Injection of those two is set up in `SqlUnitOfWorkInstaller`, demonstrating how the two can be retrieved 
+from the current `UnitOfWork` instance that we stash in the transaction context's `Items` collection after
+it is created.
+
+The creation and management of the unit of work is set up by calling the `EnableUnitOfWork` method
+when configuring Rebus.
