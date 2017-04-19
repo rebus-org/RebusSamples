@@ -16,41 +16,26 @@ namespace UnitOfWork.Installers
         {
             container.Register(
                 Component.For<SqlConnection>()
-                    .UsingFactoryMethod(k => GetSqlConnection(), managedExternally: true)
+                    .UsingFactoryMethod(() => GetUnitOfWork().GetConnection(), managedExternally: true)
                     .LifestyleTransient(),
 
                 Component.For<SqlTransaction>()
-                    .UsingFactoryMethod(GetSqlTransaction, managedExternally: true)
+                    .UsingFactoryMethod(() => GetUnitOfWork().GetTransaction(), managedExternally: true)
                     .LifestyleTransient()
                 );
         }
 
-        static SqlConnection GetSqlConnection()
-        {
-            return GetUnitOfWork().GetConnection();
-        }
-
-        static SqlTransaction GetSqlTransaction(IKernel kernel)
-        {
-            return GetUnitOfWork().GetTransaction();
-        }
-
         static UnitOfWork GetUnitOfWork()
         {
-            var transactionContext = GetTransactionContext();
-
-            // get unit of work that was stashed in the transaction context
-            return transactionContext.GetOrThrow<UnitOfWork>("uow");
-        }
-
-        static ITransactionContext GetTransactionContext()
-        {
             var transactionContext = AmbientTransactionContext.Current;
+
             if (transactionContext == null)
             {
                 throw new InvalidOperationException("Attempted to get transaction context outside of a message handler!");
             }
-            return transactionContext;
+
+            // get unit of work that was stashed in the transaction context
+            return transactionContext.GetOrThrow<UnitOfWork>("uow");
         }
     }
 }

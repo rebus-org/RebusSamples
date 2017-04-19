@@ -60,15 +60,9 @@ namespace UnitOfWork
             return unitOfWork;
         }
 
-        static void Commit(IMessageContext context, UnitOfWork uow)
-        {
-            uow.Commit();
-        }
+        static void Commit(IMessageContext context, UnitOfWork uow) => uow.Commit();
 
-        static void Dispose(IMessageContext context, UnitOfWork uow)
-        {
-            uow.Dispose();
-        }
+        static void Dispose(IMessageContext context, UnitOfWork uow) => uow.Dispose();
 
         static void SendStringToSelf(IWindsorContainer container)
         {
