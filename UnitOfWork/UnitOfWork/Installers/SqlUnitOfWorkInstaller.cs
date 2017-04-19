@@ -27,16 +27,20 @@ namespace UnitOfWork.Installers
 
         static SqlConnection GetSqlConnection()
         {
-            return GetTransactionContext()
-                .GetOrThrow<UnitOfWork>("uow")
-                .GetConnection();
+            return GetUnitOfWork().GetConnection();
         }
 
         static SqlTransaction GetSqlTransaction(IKernel kernel)
         {
-            return GetTransactionContext()
-                .GetOrThrow<UnitOfWork>("uow")
-                .GetTransaction();
+            return GetUnitOfWork().GetTransaction();
+        }
+
+        static UnitOfWork GetUnitOfWork()
+        {
+            var transactionContext = GetTransactionContext();
+
+            // get unit of work that was stashed in the transaction context
+            return transactionContext.GetOrThrow<UnitOfWork>("uow");
         }
 
         static ITransactionContext GetTransactionContext()

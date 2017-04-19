@@ -53,7 +53,10 @@ namespace UnitOfWork
         static UnitOfWork Create(IMessageContext context)
         {
             var unitOfWork = new UnitOfWork();
+
+            // stash current unit of work in the transaction context's items
             context.TransactionContext.Items["uow"] = unitOfWork;
+
             return unitOfWork;
         }
 
