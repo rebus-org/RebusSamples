@@ -11,6 +11,7 @@ Check out
 * [OWIN Web Host](/OwinWebHost) - demonstrates how Rebus can be configured to host an OWIN endpoint
 * [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
 * [Sagas](/Sagas) - sample that shows a saga
+* [SimpleInjector](/SimpleInjector) - sample that shows how SimpleInjector works with Rebus
 
 ### Scaleout samples
 
