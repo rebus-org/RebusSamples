@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="rebus" Version="4.0.0-b11" />
+    <PackageReference Include="rebus.simpleinjector" Version="4.0.0-b03" />
+  </ItemGroup>
+
+</Project>
