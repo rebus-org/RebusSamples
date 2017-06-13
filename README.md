@@ -12,6 +12,7 @@ Check out
 * [Showdown](/Showdown) - sample that can send/receive a bunch of messages and measure the time it takes
 * [Sagas](/Sagas) - sample that shows a saga
 * [SimpleInjector](/SimpleInjector) - sample that shows how SimpleInjector works with Rebus
+* [Logging](/Logging) - sample with various types of logging
 
 ### Scaleout samples
 
