@@ -13,6 +13,7 @@ Check out
 * [Sagas](/Sagas) - sample that shows a saga
 * [SimpleInjector](/SimpleInjector) - sample that shows how SimpleInjector works with Rebus
 * [Logging](/Logging) - sample with various types of logging
+* [SqlAllTheWay](/SqlAllTheWay) - sample that demonstrates "exactly once delivery" with SQL transport and user work enlisted in same transaction
 
 ### Scaleout samples
 
