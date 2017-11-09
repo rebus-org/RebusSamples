@@ -2,6 +2,7 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Rebus.CastleWindsor;
+using UnitOfWork.Handlers;
 
 namespace UnitOfWork.Installers
 {
@@ -9,7 +10,7 @@ namespace UnitOfWork.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.AutoRegisterHandlersFromThisAssembly();
+            container.AutoRegisterHandlersFromAssemblyOf<FailSometimes>();
         }
     }
 }
