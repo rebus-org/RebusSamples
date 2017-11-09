@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using Rebus.Config;
-using Rebus.SqlServer.Transport;
 using Rebus.Transports.Showdown.Core;
 
 namespace Rebus.Transports.Showdown.SqlServer
@@ -11,6 +10,7 @@ namespace Rebus.Transports.Showdown.SqlServer
         const string QueueName = "test_showdown";
         const string TableName = QueueName;
         const string SqlServerConnectionString = "server=.; initial catalog=rebus2_test; integrated security=sspi";
+        const int TableNotFound = 208;
 
         public static void Main()
         {
@@ -33,11 +33,18 @@ namespace Rebus.Transports.Showdown.SqlServer
             using (var connection = new SqlConnection(SqlServerConnectionString))
             {
                 connection.Open();
-                using (var command = connection.CreateCommand())
+
+                try
                 {
-                    command.CommandText = $"DELETE FROM [{TableName}] WHERE [Recipient] = @recipient";
-                    command.Parameters.Add("recipient", SqlDbType.NVarChar, 200).Value = inputQueueName;
-                    command.ExecuteNonQuery();
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = $"DELETE FROM [{TableName}] WHERE [Recipient] = @recipient";
+                        command.Parameters.Add("recipient", SqlDbType.NVarChar, 200).Value = inputQueueName;
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException sqlException) when (sqlException.Number == TableNotFound)
+                {
                 }
             }
         }

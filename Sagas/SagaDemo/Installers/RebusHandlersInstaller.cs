@@ -2,6 +2,7 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Rebus.CastleWindsor;
+using SagaDemo.Handlers;
 
 namespace SagaDemo.Installers
 {
@@ -10,7 +11,7 @@ namespace SagaDemo.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             // just register all Rebus handlers from this assembly
-            container.AutoRegisterHandlersFromThisAssembly();
+            container.RegisterHandler<PayoutSaga>();
         }
     }
 }

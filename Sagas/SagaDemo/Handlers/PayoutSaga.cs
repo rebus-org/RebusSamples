@@ -78,7 +78,7 @@ namespace SagaDemo.Handlers
 
             Logger.Information("Ordering wake-up call in {TimeoutSeconds} s for case {CaseNumber}", 20, Data.CaseNumber);
 
-            await _bus.Defer(TimeSpan.FromSeconds(20), new VerifyComplete(Data.CaseNumber));
+            await _bus.DeferLocal(TimeSpan.FromSeconds(20), new VerifyComplete(Data.CaseNumber));
         }
 
         async Task Post()

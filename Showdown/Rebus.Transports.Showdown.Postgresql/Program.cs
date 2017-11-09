@@ -11,6 +11,7 @@ namespace Rebus.Transports.Showdown.PostgreSql
         const string QueueName = "test_showdown";
         const string TableName = QueueName;
         const string PostgresqlConnectionString = "server=localhost;database=rebus2_test;user id=postgres; password=postgres; Maximum Pool Size=30";
+        const string TableNotFound = "42P01";
 
         public static void Main()
         {
@@ -33,11 +34,17 @@ namespace Rebus.Transports.Showdown.PostgreSql
             using (var connection = new NpgsqlConnection(PostgresqlConnectionString))
             {
                 connection.Open();
-                using (var command = connection.CreateCommand())
+                try
                 {
-                    command.CommandText = $@"DELETE FROM ""{TableName}"" WHERE ""recipient"" = @recipient;";
-                    command.Parameters.Add("recipient", NpgsqlDbType.Text, 200).Value = queueName;
-                    command.ExecuteNonQuery();
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = $@"DELETE FROM ""{TableName}"" WHERE ""recipient"" = @recipient;";
+                        command.Parameters.Add("recipient", NpgsqlDbType.Text, 200).Value = queueName;
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (PostgresException postgresException) when (postgresException.SqlState == TableNotFound)
+                {
                 }
             }
         }
