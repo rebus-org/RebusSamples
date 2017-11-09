@@ -23,7 +23,7 @@ namespace Consumer
 
                 Configure.With(adapter)
                     .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UsePostgreSql("server=localhost;port=5433;database=rebus2_test; user id=test; password=test; maximum pool size=30", "messages", "consumer"))
+                    .Transport(t => t.UsePostgreSql("server=localhost; database=rebus2_test; user id=postgres; password=postgres; maximum pool size=30", "messages", "consumer"))
                     .Options(o =>
                     {
                         o.SetNumberOfWorkers(10);
