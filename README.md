@@ -14,6 +14,8 @@ Check out
 * [SimpleInjector](/SimpleInjector) - sample that shows how SimpleInjector works with Rebus
 * [Logging](/Logging) - sample with various types of logging
 * [SqlAllTheWay](/SqlAllTheWay) - sample that demonstrates "exactly once delivery" with SQL transport and user work enlisted in same transaction
+* [MessageBus](/MessageBus) - demonstrates how tree totally independent endpoints can do pub/sub with a central database being their only connection
+* [RequestReply](/RequestReply) - demonstrates how a client can send a request to a server, which then can reply back to the client
 
 ### Scaleout samples
 
@@ -25,3 +27,4 @@ Check out
 
 * [User context sample](/old/UserContextHeaders) - shows how an ambient user context can be passed along with messages 
 * [MSMQ scaleout](/old/MsmqScaleout) - demonstrates how work can be distributed among a cluster of workers when working with MSMQ and Rebus' MSMQ distributor
+
