@@ -4,7 +4,7 @@ using NLog.Config;
 using NLog.Targets;
 using Rebus.Activation;
 using Rebus.Config;
-using Rebus.NLog;
+using Rebus.NLog.Config;
 using Rebus.Transport.InMem;
 using Serilog;
 
@@ -26,8 +26,8 @@ namespace LoggingApp
 
         static void ConfigureUsing(IHandlerActivator activator)
         {
-            //ConfigureSerilog(activator);
-            ConfigureNLog(activator);
+            ConfigureSerilog(activator);
+            //ConfigureNLog(activator);
         }
 
         static void ConfigureSerilog(IHandlerActivator activator)
