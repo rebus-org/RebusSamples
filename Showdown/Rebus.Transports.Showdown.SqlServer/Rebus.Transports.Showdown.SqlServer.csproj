@@ -41,8 +41,8 @@
     <Reference Include="Rebus, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rebus.4.1.0\lib\net45\Rebus.dll</HintPath>
     </Reference>
-    <Reference Include="Rebus.SqlServer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rebus.SqlServer.4.0.0\lib\net45\Rebus.SqlServer.dll</HintPath>
+    <Reference Include="Rebus.SqlServer, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rebus.SqlServer.5.0.0-b4\lib\net45\Rebus.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

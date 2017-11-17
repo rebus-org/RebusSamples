@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using Rebus.Config;
 using Rebus.Transports.Showdown.Core;
 
@@ -8,7 +7,6 @@ namespace Rebus.Transports.Showdown.SqlServer
     public class Program
     {
         const string QueueName = "test_showdown";
-        const string TableName = QueueName;
         const string SqlServerConnectionString = "server=.; initial catalog=rebus2_test; integrated security=sspi";
         const int TableNotFound = 208;
 
@@ -16,11 +14,11 @@ namespace Rebus.Transports.Showdown.SqlServer
         {
             using (var runner = new ShowdownRunner())
             {
-                PurgeInputQueue(QueueName);
+                PurgeInputQueue();
 
                 Configure.With(runner.Adapter)
                     .Logging(l => l.None())
-                    .Transport(t => t.UseSqlServer(SqlServerConnectionString, TableName, QueueName))
+                    .Transport(t => t.UseSqlServer(SqlServerConnectionString, QueueName))
                     .Options(o => o.SetMaxParallelism(20))
                     .Start();
 
@@ -28,7 +26,7 @@ namespace Rebus.Transports.Showdown.SqlServer
             }
         }
 
-        static void PurgeInputQueue(string inputQueueName)
+        static void PurgeInputQueue()
         {
             using (var connection = new SqlConnection(SqlServerConnectionString))
             {
@@ -38,8 +36,7 @@ namespace Rebus.Transports.Showdown.SqlServer
                 {
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = $"DELETE FROM [{TableName}] WHERE [Recipient] = @recipient";
-                        command.Parameters.Add("recipient", SqlDbType.NVarChar, 200).Value = inputQueueName;
+                        command.CommandText = $"DROP TABLE [{QueueName}]";
                         command.ExecuteNonQuery();
                     }
                 }
