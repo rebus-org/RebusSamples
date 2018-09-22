@@ -4,6 +4,7 @@ Check out
 
 * [Time printer](/TimePrinter) - simple program that sends a message to itself every second
 * [Email sender](/EmailSender) - simple email sender that functions as a good example on how to queue up work
+* [Centralized Pub/sub sample](/PubSubCentralized) - demonstrates how pub/sub can be wired up, using SQL Server as a "centralized subscription storage"
 * [Pub/sub sample](/PubSub) - demonstrates how pub/sub can be wired up
 * [Integration sample](/Integration) - demonstrates how calling an external web service can be made more robust
 * [Unit of work sample](/UnitOfWork) - demonstrates how a proper unit of work can be hooked into Rebus in all the right places
