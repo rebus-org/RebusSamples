@@ -30,7 +30,7 @@ Rebus will then create topics and bindings as needed, so when you
 await bus.Subscribe<SomeEvent>();
 ```
 a topic named after the assembly, namespace, and type name will be created, and a subscription
-beneath it will forward received messages to the caller's input queue.
+beneath it will forward received messages to the caller's input queue (`subscriber2` in this case).
 
 Naturally, when someone then calls
 ```csharp
