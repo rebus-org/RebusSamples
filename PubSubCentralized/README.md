@@ -36,7 +36,7 @@ Naturally, when someone then calls
 ```csharp
 await bus.Publish(new SomeEvent(...));
 ```
-the event will be send to the topic, causing a copy of it to be distributed to each subscriber.
+the event will be sent to the topic, causing a copy of it to be distributed to each subscriber.
 
 ### RabbitMQ
 
