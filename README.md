@@ -4,6 +4,7 @@ Check out
 
 * [Time printer](/TimePrinter) - simple program that sends a message to itself every second
 * [Email sender](/EmailSender) - simple email sender that functions as a good example on how to queue up work
+* [Native Pub/sub sample](/PubSubNative) - demonstrates how pub/sub can be wired up when the transport has native support for it (in this case using Azure Service Bus)
 * [Centralized Pub/sub sample](/PubSubCentralized) - demonstrates how pub/sub can be wired up, using SQL Server as a "centralized subscription storage"
 * [Pub/sub sample](/PubSub) - demonstrates how pub/sub can be wired up
 * [Integration sample](/Integration) - demonstrates how calling an external web service can be made more robust
