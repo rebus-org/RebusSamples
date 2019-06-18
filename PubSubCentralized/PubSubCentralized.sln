@@ -1,15 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CA68E342-92F7-4363-8799-5C0231D532EA}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubSub.Publisher", "PubSub.Publisher\PubSub.Publisher.csproj", "{698C7D00-AF8C-466A-8F2E-DED86E28FEFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubSub.Subscriber1", "PubSub.Subscriber1\PubSub.Subscriber1.csproj", "{D1BFFD72-E9E0-4D5A-89CC-541A9A25A02B}"
@@ -18,7 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubSub.Subscriber2", "PubSu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38B04808-A0C5-46B5-9632-E9D6938AA9EB}"
 	ProjectSection(SolutionItems) = preProject
-		..\OwinWebHost\README.md = ..\OwinWebHost\README.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -49,5 +41,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {211F0BAE-4FC9-4EB1-83A0-AE85CA35A459}
 	EndGlobalSection
 EndGlobal
