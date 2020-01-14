@@ -5,6 +5,7 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Handlers;
 using Rebus.Routing.TypeBased;
+#pragma warning disable 1998
 
 namespace TimePrinter
 {
@@ -22,10 +23,10 @@ namespace TimePrinter
                 var bus = Configure.With(activator)
                     .Logging(l => l.None())
                     .Transport(t => t.UseMsmq(InputQueueName))
-                    .Routing(r => r.TypeBased().Map<DateTime>(InputQueueName))
+                    .Routing(r => r.TypeBased().Map<CurrentTimeMessage>(InputQueueName))
                     .Start();
 
-                timer.Elapsed += delegate { bus.Send(DateTime.Now).Wait(); };
+                timer.Elapsed += delegate { bus.Send(new CurrentTimeMessage(DateTimeOffset.Now)).Wait(); };
                 timer.Interval = 1000;
                 timer.Start();
 
@@ -35,11 +36,11 @@ namespace TimePrinter
         }
     }
 
-    class PrintDateTime : IHandleMessages<DateTime>
+    class PrintDateTime : IHandleMessages<CurrentTimeMessage>
     {
-        public async Task Handle(DateTime currentDateTime)
+        public async Task Handle(CurrentTimeMessage message)
         {
-            Console.WriteLine("The time is {0}", currentDateTime);
+            Console.WriteLine("The time is {0}", message.Time);
         }
     }
 }
