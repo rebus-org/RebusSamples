@@ -1,4 +1,5 @@
-﻿using Rebus.Config;
+﻿using System.Configuration;
+using Rebus.Config;
 using Serilog;
 // ReSharper disable ArgumentsStyleLiteral
 
@@ -8,6 +9,8 @@ namespace Common
     {
         public static RebusConfigurer ConfigureEndpoint(this RebusConfigurer configurer, EndpointRole role)
         {
+            var connectionString = ConfigurationManager.ConnectionStrings["RebusDatabase"]?.ConnectionString ?? throw new ConfigurationErrorsException("Could not find 'RebusDatabase' connection string");
+
             configurer
                 .Logging(l => l.Serilog(Log.Logger))
                 .Transport(t =>
@@ -25,7 +28,7 @@ namespace Common
                 {
                     var subscriptionsTableName = Config.AppSetting("SubscriptionsTableName");
 
-                    s.StoreInSqlServer("RebusDatabase", subscriptionsTableName, isCentralized: true);
+                    s.StoreInSqlServer(connectionString, subscriptionsTableName, isCentralized: true);
                 })
                 .Sagas(s =>
                 {
@@ -35,7 +38,7 @@ namespace Common
                     var indexTableName = Config.AppSetting("SagaIndexTableName");
 
                     // store sagas in SQL Server to make them persistent and survive restarts
-                    s.StoreInSqlServer("RebusDatabase", dataTableName, indexTableName);
+                    s.StoreInSqlServer(connectionString, dataTableName, indexTableName);
                 })
                 .Timeouts(t =>
                 {
@@ -44,7 +47,7 @@ namespace Common
                     var tableName = Config.AppSetting("TimeoutsTableName");
 
                     // store timeouts in SQL Server to make them persistent and survive restarts
-                    t.StoreInSqlServer("RebusDatabase", tableName);
+                    t.StoreInSqlServer(connectionString, tableName);
                 });
 
             return configurer;
