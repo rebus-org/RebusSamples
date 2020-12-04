@@ -26,6 +26,10 @@ Check out
 * [SQL Server scaleout](/SqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with SQL Server as the transport
 * [PostgreSQL scaleout](/PostgreSqlScaleout) - demonstrates how work can be easily distributed among a cluster of workers when working with PostgreSQL as the transport
 
+### F# Samples
+
+* [Onboarding saga](/FSharp/OnboardingSaga) - demonstrates how to work with Rebus in F#, showing an entry-point Web API and a backend saga with a timeout and compensating actions. 
+
 ## Deprecated
 
 * [User context sample](/old/UserContextHeaders) - shows how an ambient user context can be passed along with messages 
