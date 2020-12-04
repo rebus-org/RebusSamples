@@ -4,8 +4,8 @@ This sample demonstrates how to work with Rebus using F#.  The project contains 
 Web API front end and a backend saga that has a timeout and compensating actions. 
 
 The project uses the file system as the message transport with `c:/rebus` being 
-the default location.  The location can be changed where Rebus is configured in the 
-[Web API](/FSharp/OnboardingSaga/EntryPointAPI/Startup.fs) and the 
+the default hard-wired location.  The location can be changed where Rebus is configured 
+in the [Web API](/FSharp/OnboardingSaga/EntryPointAPI/Startup.fs) and the 
 [backend saga](/FSharp/OnboardingSaga/OnboardingProcessor/Backend.fs).
 
 This sample models a made-up business process for onboarding of new customers.  
