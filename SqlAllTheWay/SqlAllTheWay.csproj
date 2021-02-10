@@ -58,8 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Migr8" Version="0.14.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
     <PackageReference Include="Rebus.SqlServer" Version="4.0.0" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
