@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using Rebus.SqlServer;
 // ReSharper disable ArgumentsStyleLiteral
 
@@ -8,8 +8,7 @@ namespace SqlAllTheWay.Config
 {
     public class CustomDbContext : IDisposable
     {
-        public const string CustomDbContextKey = "custom-db-context";
-
+        public static readonly AsyncLocal<DbConnectionWrapper> AsyncLocalDbConnection = new AsyncLocal<DbConnectionWrapper>();
         readonly SqlConnection _connection;
         readonly SqlTransaction _transaction;
 
@@ -22,7 +21,7 @@ namespace SqlAllTheWay.Config
             // the connection is managed externally in this case because WE commit and dispose it
             var connectionWrapper = new DbConnectionWrapper(_connection, _transaction, managedExternally: true);
 
-            CallContext.LogicalSetData(CustomDbContextKey, connectionWrapper);
+            AsyncLocalDbConnection.Value = connectionWrapper;
         }
 
         public void Commit()
@@ -34,7 +33,7 @@ namespace SqlAllTheWay.Config
         {
             _transaction.Dispose();
             _connection.Dispose();
-            CallContext.LogicalSetData(CustomDbContextKey, null);
+            AsyncLocalDbConnection.Value = null;
         }
     }
 }
