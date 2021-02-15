@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Data.SqlClient;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using Rebus.SqlServer;
 using Rebus.SqlServer.Transport;
@@ -29,7 +28,7 @@ namespace SqlAllTheWay.Config
 
         static IDbConnection GetCustomDbConnectionOrNull()
         {
-            return CallContext.LogicalGetData(CustomDbContext.CustomDbContextKey) as IDbConnection;
+            return CustomDbContext.AsyncLocalDbConnection.Value;
         }
 
         static async Task<IDbConnection> GetCurrentlyOngoingRebusDbConnectionOrNull()
