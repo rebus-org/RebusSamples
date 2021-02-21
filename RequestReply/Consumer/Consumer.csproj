@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{75E61A8E-3C76-4717-9FC5-9D24E072B18E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net50</TargetFramework>
     <AssemblyTitle>Consumer</AssemblyTitle>
     <Product>Consumer</Product>
     <Copyright>Copyright ©  2014</Copyright>
@@ -12,22 +11,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
-    <PackageReference Include="Rebus.SqlServer" Version="4.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="Rebus" Version="6.4.1" />
+    <PackageReference Include="Rebus.SqlServer" Version="7.1.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Consumer.Messages\Consumer.Messages.csproj" />

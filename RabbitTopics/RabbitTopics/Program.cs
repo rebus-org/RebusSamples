@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.RabbitMq;
+
 #pragma warning disable 1998
 
 namespace RabbitTopics
@@ -12,42 +13,41 @@ namespace RabbitTopics
         const LogLevel MinimumLogLevel = LogLevel.Warn;
         const string ConnectionString = "amqp://localhost";
 
-        static void Main()
+        static async Task Main()
         {
-            using (var publisher = new BuiltinHandlerActivator())
-            using (var subscriber1 = new BuiltinHandlerActivator())
-            using (var subscriber2 = new BuiltinHandlerActivator())
-            using (var subscriber3 = new BuiltinHandlerActivator())
-            {
-                ConfigureSubscriber(subscriber1, "endpoint1");
-                ConfigureSubscriber(subscriber2, "endpoint2");
-                ConfigureSubscriber(subscriber3, "endpoint3");
+            using var publisher = new BuiltinHandlerActivator();
+            using var subscriber1 = new BuiltinHandlerActivator();
+            using var subscriber2 = new BuiltinHandlerActivator();
+            using var subscriber3 = new BuiltinHandlerActivator();
 
-                subscriber1.Bus.Advanced.Topics.Subscribe("mercedes.#").Wait();
-                subscriber2.Bus.Advanced.Topics.Subscribe("mercedes.bmw.#").Wait();
-                subscriber3.Bus.Advanced.Topics.Subscribe("mercedes.bmw.vw").Wait();
+            ConfigureSubscriber(subscriber1, "endpoint1");
+            ConfigureSubscriber(subscriber2, "endpoint2");
+            ConfigureSubscriber(subscriber3, "endpoint3");
 
-                var publisherBus = Configure.With(publisher)
-                    .Logging(l => l.ColoredConsole(MinimumLogLevel))
-                    .Transport(t => t.UseRabbitMqAsOneWayClient(ConnectionString))
-                    .Start();
+            await subscriber1.Bus.Advanced.Topics.Subscribe("mercedes.#");
+            await subscriber2.Bus.Advanced.Topics.Subscribe("mercedes.bmw.#");
+            await subscriber3.Bus.Advanced.Topics.Subscribe("mercedes.bmw.vw");
 
-                var topicsApi = publisherBus.Advanced.Topics;
+            var publisherBus = Configure.With(publisher)
+                .Logging(l => l.ColoredConsole(MinimumLogLevel))
+                .Transport(t => t.UseRabbitMqAsOneWayClient(ConnectionString))
+                .Start();
 
-                topicsApi.Publish("mercedes.bmw.vw", "This one should be received by all!").Wait();
-                topicsApi.Publish("mercedes.bmw.mazda", "This one should be received by 1 & 2").Wait();
-                topicsApi.Publish("mercedes.honda", "This one should be received by 1").Wait();
+            var topicsApi = publisherBus.Advanced.Topics;
 
-                Console.WriteLine("Press ENTER to quit");
-                Console.ReadLine();
-            }
+            await topicsApi.Publish("mercedes.bmw.vw", "This one should be received by all!");
+            await topicsApi.Publish("mercedes.bmw.mazda", "This one should be received by 1 & 2");
+            await topicsApi.Publish("mercedes.honda", "This one should be received by 1");
+
+            Console.WriteLine("Press ENTER to quit");
+            Console.ReadLine();
         }
 
         static void ConfigureSubscriber(BuiltinHandlerActivator activator, string inputQueueName)
         {
             activator.Handle<string>(async str =>
             {
-                Console.WriteLine("{0} => '{1}'", str, inputQueueName);
+                Console.WriteLine("Message '{0}' was received by '{1}'", str, inputQueueName);
             });
 
             Configure.With(activator)

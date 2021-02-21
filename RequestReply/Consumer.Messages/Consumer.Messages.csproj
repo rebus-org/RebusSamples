@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{56A97AEA-AF41-41D0-895C-D76E0008499F}</ProjectGuid>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netstandard20</TargetFramework>
     <AssemblyTitle>Consumer.Messages</AssemblyTitle>
     <Product>Consumer.Messages</Product>
     <Copyright>Copyright ©  2014</Copyright>
@@ -11,14 +10,4 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
 </Project>

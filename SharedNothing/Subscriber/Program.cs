@@ -10,7 +10,7 @@ namespace Subscriber
 {
     class Program
     {
-        const string ConnectionString = "server=.; database=SharedNothing; trusted_connection=true";
+        const string ConnectionString = "server=.; database=rebussamples; trusted_connection=true";
         const string SubscriptionsTableName = "Subscriptions";
 
         static void Main()

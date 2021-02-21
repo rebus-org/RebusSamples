@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ProjectGuid>{DA5576A7-6CFD-4334-A8D6-6A5CCBB10FE9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5</TargetFramework>
     <AssemblyTitle>RabbitTopics</AssemblyTitle>
     <Product>RabbitTopics</Product>
     <Copyright>Copyright ©  2015</Copyright>
@@ -19,14 +19,7 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="4.1.1" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
-    <PackageReference Include="Rebus.RabbitMq" Version="4.1.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="Rebus" Version="6.4.1" />
+    <PackageReference Include="Rebus.RabbitMq" Version="7.3.0" />
   </ItemGroup>
 </Project>

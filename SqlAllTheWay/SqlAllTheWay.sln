@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlAllTheWay", "SqlAllTheWay.csproj", "{CA974A5F-7903-4AE0-A5D0-EAE4A685390F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlAllTheWay", "SqlAllTheWay\SqlAllTheWay.csproj", "{CA974A5F-7903-4AE0-A5D0-EAE4A685390F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C1E69C1-080A-4336-A040-4B0DC49CDAD4}
 	EndGlobalSection
 EndGlobal

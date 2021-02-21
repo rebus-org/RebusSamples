@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="migr8" Version="0.21.0" />
     <PackageReference Include="rebus" Version="6.4.1" />
-    <PackageReference Include="rebus.castle.windsor" Version="6.1.0" />
-    <PackageReference Include="rebus.msmq" Version="6.0.0" />
-    <PackageReference Include="rebus.unitofwork" Version="6.0.0" />
+    <PackageReference Include="rebus.sqlserver" Version="7.1.7" />
   </ItemGroup>
 </Project>

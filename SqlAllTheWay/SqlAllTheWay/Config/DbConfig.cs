@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Rebus.SqlServer;
 using Rebus.SqlServer.Transport;
 using Rebus.Transport;

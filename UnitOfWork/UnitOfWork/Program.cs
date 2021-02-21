@@ -7,7 +7,6 @@ using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Handlers.Reordering;
 using Rebus.Pipeline;
-using Rebus.UnitOfWork;
 using UnitOfWork.Handlers;
 // ReSharper disable ArgumentsStyleNamedExpression
 
@@ -17,7 +16,7 @@ namespace UnitOfWork
     {
         static void Main()
         {
-            Database.Migrate("database", Migr8.Migrations.FromThisAssembly());
+            Database.Migrate("database", Migr8.Migrations.FromAssemblyOf<Program>());
 
             using (var container = new WindsorContainer())
             {
@@ -35,7 +34,7 @@ namespace UnitOfWork
                             .First<InsertRowsIntoDatabase>()
                             .Then<FailSometimes>();
 
-                        o.EnableUnitOfWork(Create, commitAction: Commit, cleanupAction: Dispose);
+                        o.EnableUnitOfWork(create: Create, commit: Commit, dispose: Dispose);
                     })
                     .Start();
 

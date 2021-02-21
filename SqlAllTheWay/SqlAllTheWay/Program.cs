@@ -14,7 +14,7 @@ namespace SqlAllTheWay
     {
         static void Main()
         {
-            Database.Migrate(DbConfig.ConnectionString, Migr8.Migrations.FromThisAssembly());
+            Database.Migrate(DbConfig.ConnectionString, Migr8.Migrations.FromAssemblyOf<Program>());
 
             using (var activator = new BuiltinHandlerActivator())
             {
@@ -25,7 +25,7 @@ namespace SqlAllTheWay
                 });
 
                 var bus = Configure.With(activator)
-                    .Transport(t => t.UseSqlServer(DbConfig.GetDbConnection, "Messages", "all-the-way-baby"))
+                    .Transport(t => t.UseSqlServer(new SqlServerTransportOptions(DbConfig.GetDbConnection), "all-the-way-baby"))
                     .Options(o =>
                     {
                         // start out with zero workers, therefore not receiving anything before adding a worker later on

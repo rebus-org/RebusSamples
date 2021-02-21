@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Threading;
+using Microsoft.Data.SqlClient;
 using Rebus.SqlServer;
 // ReSharper disable ArgumentsStyleLiteral
 

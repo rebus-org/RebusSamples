@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external web service", "external web service", "{007AF927-CE5D-4723-8C18-FABE1E1DB5E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationSample.Client", "IntegrationSample.Client\IntegrationSample.Client.csproj", "{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationSample.Client", "IntegrationSample.Client\IntegrationSample.Client.csproj", "{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationSample.IntegrationService", "IntegrationSample.IntegrationService\IntegrationSample.IntegrationService.csproj", "{F22823D6-D5BA-4875-9E7D-34E55ADB459B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationSample.IntegrationService", "IntegrationSample.IntegrationService\IntegrationSample.IntegrationService.csproj", "{F22823D6-D5BA-4875-9E7D-34E55ADB459B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationSample.IntegrationService.Messages", "IntegrationSample.IntegrationService.Messages\IntegrationSample.IntegrationService.Messages.csproj", "{C4613784-944B-47E3-8DAB-53AD9AD1E6BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationSample.IntegrationService.Messages", "IntegrationSample.IntegrationService.Messages\IntegrationSample.IntegrationService.Messages.csproj", "{C4613784-944B-47E3-8DAB-53AD9AD1E6BB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CA68E342-92F7-4363-8799-5C0231D532EA}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationSample.ExternalWebService", "IntegrationSample.ExternalWebService\IntegrationSample.ExternalWebService.csproj", "{6256B69C-A0B8-4591-9949-27C6B8F73588}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationSample.ExternalWebService", "IntegrationSample.ExternalWebService\IntegrationSample.ExternalWebService.csproj", "{6256B69C-A0B8-4591-9949-27C6B8F73588}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,23 +36,23 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|x86.ActiveCfg = Debug|x86
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Debug|x86.Build.0 = Debug|x86
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|Any CPU.ActiveCfg = Release|x86
-		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|x86.ActiveCfg = Release|x86
 		{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}.Release|x86.Build.0 = Release|x86
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|x86.ActiveCfg = Debug|x86
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Debug|x86.Build.0 = Debug|x86
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|Any CPU.ActiveCfg = Release|x86
-		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|x86.ActiveCfg = Release|x86
 		{F22823D6-D5BA-4875-9E7D-34E55ADB459B}.Release|x86.Build.0 = Release|x86
 		{C4613784-944B-47E3-8DAB-53AD9AD1E6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -83,5 +83,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6256B69C-A0B8-4591-9949-27C6B8F73588} = {007AF927-CE5D-4723-8C18-FABE1E1DB5E5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7ADB862E-BC36-4F45-902A-DD76D8716DA9}
 	EndGlobalSection
 EndGlobal

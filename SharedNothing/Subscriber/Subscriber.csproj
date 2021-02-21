@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{3EC4C913-7000-42F3-AD98-15B3AD32F4CC}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Subscriber</AssemblyTitle>
     <Product>Subscriber</Product>
@@ -13,24 +12,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Rebus" Version="5.3.0" />
-    <PackageReference Include="Rebus.Msmq" Version="5.0.0" />
-    <PackageReference Include="Rebus.SqlServer" Version="5.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
+    <PackageReference Include="Rebus" Version="6.4.1" />
+    <PackageReference Include="Rebus.Msmq" Version="6.0.0" />
+    <PackageReference Include="Rebus.SqlServer" Version="7.1.7" />
   </ItemGroup>
 </Project>
