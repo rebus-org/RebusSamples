@@ -10,7 +10,7 @@ namespace TestClient
     {
         static void Main()
         {
-            var bus = Configure.With(new BuiltinHandlerActivator())
+            using var bus = Configure.OneWayClient()
                 .Transport(t => t.UseMsmqAsOneWayClient())
                 .Routing(r => r.TypeBased().MapAssemblyOf<SendEmail>("emailsender"))
                 .Start();

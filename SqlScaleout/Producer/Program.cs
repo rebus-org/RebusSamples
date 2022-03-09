@@ -15,41 +15,38 @@ namespace Producer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinHandlerActivator())
+            using var bus = Configure.OneWayClient()
+                .Logging(l => l.ColoredConsole(LogLevel.Warn))
+                .Transport(t => t.UseSqlServerAsOneWayClient("server=.; initial catalog=rebus; integrated security=true", "Messages"))
+                .Routing(r => r.TypeBased().MapAssemblyOf<Job>("consumer"))
+                .Start();
+
+            var keepRunning = true;
+
+            while (keepRunning)
             {
-                Configure.With(adapter)
-                    .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseSqlServerAsOneWayClient("server=.; initial catalog=rebus; integrated security=true", "Messages"))
-                    .Routing(r => r.TypeBased().MapAssemblyOf<Job>("consumer"))
-                    .Start();
-
-                var keepRunning = true;
-
-                while (keepRunning)
-                {
-                    Console.WriteLine(@"a) Send 10 jobs
+                Console.WriteLine(@"a) Send 10 jobs
 b) Send 100 jobs
 c) Send 1000 jobs
 
 q) Quit");
-                    var key = char.ToLower(Console.ReadKey(true).KeyChar);
+                var key = char.ToLower(Console.ReadKey(true).KeyChar);
 
-                    switch (key)
-                    {
-                        case 'a':
-                            Send(10, adapter.Bus);
-                            break;
-                        case 'b':
-                            Send(100, adapter.Bus);
-                            break;
-                        case 'c':
-                            Send(1000, adapter.Bus);
-                            break;
-                        case 'q':
-                            Console.WriteLine("Quitting");
-                            keepRunning = false;
-                            break;
-                    }
+                switch (key)
+                {
+                    case 'a':
+                        Send(10, bus);
+                        break;
+                    case 'b':
+                        Send(100, bus);
+                        break;
+                    case 'c':
+                        Send(1000, bus);
+                        break;
+                    case 'q':
+                        Console.WriteLine("Quitting");
+                        keepRunning = false;
+                        break;
                 }
             }
         }

@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.2.2" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Rebus" Version="5.3.1" />
+    <PackageReference Include="Rebus" Version="7.0.0-b05" />
     <PackageReference Include="Rebus.AzureServiceBus" Version="6.0.7" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.4.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.2" />

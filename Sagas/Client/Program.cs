@@ -20,42 +20,39 @@ namespace Client
                 .MinimumLevel.Warning()
                 .CreateLogger();
 
-            using (var activator = new BuiltinHandlerActivator())
+            using var bus = Configure.OneWayClient()
+                .ConfigureEndpoint(EndpointRole.Client)
+                .Start();
+
+            while (true)
             {
-                var bus = Configure.With(activator)
-                    .ConfigureEndpoint(EndpointRole.Client)
-                    .Start();
+                Console.Write("Case number > ");
+                var caseNumber = Console.ReadLine();
 
-                while (true)
+                if (string.IsNullOrWhiteSpace(caseNumber))
                 {
-                    Console.Write("Case number > ");
-                    var caseNumber = Console.ReadLine();
+                    Console.WriteLine("Quitting...");
+                    return;
+                }
 
-                    if (string.IsNullOrWhiteSpace(caseNumber))
-                    {
-                        Console.WriteLine("Quitting...");
-                        return;
-                    }
-
-                    Console.WriteLine(@"Which event to publish?
+                Console.WriteLine(@"Which event to publish?
 a) AmountsCalculated
 t) TaxesCalculated
 p) PayoutMethodSelected
 ");
-                    var key = ReadKey("atp");
+                var key = ReadKey("atp");
 
-                    switch (key)
-                    {
-                        case 'a':
-                            bus.Publish(new AmountsCalculated(caseNumber)).Wait();
-                            break;
-                        case 't':
-                            bus.Publish(new TaxesCalculated(caseNumber)).Wait();
-                            break;
-                        case 'p':
-                            bus.Publish(new PayoutMethodSelected(caseNumber)).Wait();
-                            break;
-                    }
+                switch (key)
+                {
+                    case 'a':
+                        bus.Publish(new AmountsCalculated(caseNumber)).Wait();
+                        break;
+                    case 't':
+                        bus.Publish(new TaxesCalculated(caseNumber)).Wait();
+                        break;
+                    case 'p':
+                        bus.Publish(new PayoutMethodSelected(caseNumber)).Wait();
+                        break;
                 }
             }
         }
