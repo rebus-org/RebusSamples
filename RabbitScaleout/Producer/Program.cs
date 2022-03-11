@@ -13,41 +13,37 @@ namespace Producer
     {
         static void Main()
         {
-            using (var adapter = new BuiltinHandlerActivator())
+            using var bus = Configure.OneWayClient()
+                .Logging(l => l.ColoredConsole(LogLevel.Warn))
+                .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://localhost"))
+                .Start();
+
+            var keepRunning = true;
+
+            while (keepRunning)
             {
-
-                Configure.With(adapter)
-                    .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://localhost"))
-                    .Start();
-
-                var keepRunning = true;
-                
-                while (keepRunning)
-                {
-                    Console.WriteLine(@"a) Publish 10 jobs
+                Console.WriteLine(@"a) Publish 10 jobs
 b) Publish 100 jobs
 c) Publish 1000 jobs
 
 q) Quit");
-                    var key = char.ToLower(Console.ReadKey(true).KeyChar);
+                var key = char.ToLower(Console.ReadKey(true).KeyChar);
 
-                    switch (key)
-                    {
-                        case 'a':
-                            Publish(10, adapter.Bus);
-                            break;
-                        case 'b':
-                            Publish(100, adapter.Bus);
-                            break;
-                        case 'c':
-                            Publish(1000, adapter.Bus);
-                            break;
-                        case 'q':
-                            Console.WriteLine("Quitting");
-                            keepRunning = false;
-                            break;
-                    }
+                switch (key)
+                {
+                    case 'a':
+                        Publish(10, bus);
+                        break;
+                    case 'b':
+                        Publish(100, bus);
+                        break;
+                    case 'c':
+                        Publish(1000, bus);
+                        break;
+                    case 'q':
+                        Console.WriteLine("Quitting");
+                        keepRunning = false;
+                        break;
                 }
             }
         }

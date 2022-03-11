@@ -15,7 +15,6 @@ namespace RabbitTopics
 
         static async Task Main()
         {
-            using var publisher = new BuiltinHandlerActivator();
             using var subscriber1 = new BuiltinHandlerActivator();
             using var subscriber2 = new BuiltinHandlerActivator();
             using var subscriber3 = new BuiltinHandlerActivator();
@@ -28,7 +27,7 @@ namespace RabbitTopics
             await subscriber2.Bus.Advanced.Topics.Subscribe("mercedes.bmw.#");
             await subscriber3.Bus.Advanced.Topics.Subscribe("mercedes.bmw.vw");
 
-            var publisherBus = Configure.With(publisher)
+            using var publisherBus = Configure.OneWayClient()
                 .Logging(l => l.ColoredConsole(MinimumLogLevel))
                 .Transport(t => t.UseRabbitMqAsOneWayClient(ConnectionString))
                 .Start();

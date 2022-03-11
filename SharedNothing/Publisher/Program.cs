@@ -13,31 +13,28 @@ namespace Publisher
 
         static void Main()
         {
-            using (var activator = new BuiltinHandlerActivator())
+            using var bus = Configure.OneWayClient()
+                .Logging(l => l.ColoredConsole(minLevel: LogLevel.Info))
+                .Transport(t => t.UseMsmq("sharednothing-publisher"))
+
+                // subscriptions are stored in a central SQL Server
+                .Subscriptions(s => s.StoreInSqlServer(ConnectionString, SubscriptionsTableName, isCentralized: true))
+
+                // configure serializer to serialize as pure JSONM (i.e. WITHOUT type information inside the serialized format)
+                .Serialization(s => s.UseNewtonsoftJson(JsonInteroperabilityMode.PureJson))
+
+                .Start();
+
+            while (true)
             {
-                var bus = Configure.With(activator)
-                    .Logging(l => l.ColoredConsole(minLevel: LogLevel.Info))
-                    .Transport(t => t.UseMsmq("sharednothing-publisher"))
-                    
-                    // subscriptions are stored in a central SQL Server
-                    .Subscriptions(s => s.StoreInSqlServer(ConnectionString, SubscriptionsTableName, isCentralized: true))
+                Console.Write("Type greeting > ");
+                var text = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(text)) break;
 
-                    // configure serializer to serialize as pure JSONM (i.e. WITHOUT type information inside the serialized format)
-                    .Serialization(s => s.UseNewtonsoftJson(JsonInteroperabilityMode.PureJson))
-                    
-                    .Start();
+                // subscribers subscribe to this topic name - this is how they get bound to this publisher's events
+                const string topic = "GreetingWasEntered";
 
-                while (true)
-                {
-                    Console.Write("Type greeting > ");
-                    var text = Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(text)) break;
-
-                    // subscribers subscribe to this topic name - this is how they get bound to this publisher's events
-                    const string topic = "GreetingWasEntered";
-
-                    bus.Advanced.Topics.Publish(topic, new GreetingWasEntered_Publisher(text)).Wait();
-                }
+                bus.Advanced.Topics.Publish(topic, new GreetingWasEntered_Publisher(text)).Wait();
             }
         }
     }
