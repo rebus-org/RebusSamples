@@ -1,25 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <ProjectGuid>{289B486F-B273-4C1B-82D4-4B4AB98B1942}</ProjectGuid>
-    <TargetFramework>net45</TargetFramework>
-    <AssemblyTitle>PubSub.Messages</AssemblyTitle>
-    <Product>PubSub.Messages</Product>
-    <Copyright>Copyright ©  2016</Copyright>
-    <AssemblyTitle>PubSub.Messages</AssemblyTitle>
-    <Product>PubSub.Messages</Product>
-    <Copyright>Copyright ©  2016</Copyright>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10</LangVersion>
+	</PropertyGroup>
 </Project>
