@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ProjectGuid>{6256B69C-A0B8-4591-9949-27C6B8F73588}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>IntegrationSample.ExternalWebService</AssemblyTitle>
     <Product>IntegrationSample.ExternalWebService</Product>
     <Copyright>Copyright ©  2015</Copyright>

@@ -4,7 +4,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <ProjectGuid>{F22823D6-D5BA-4875-9E7D-34E55ADB459B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>IntegrationSample.IntegrationService</AssemblyTitle>
     <Product>IntegrationSample.IntegrationService</Product>
@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.0.0" />
     <PackageReference Include="Castle.Windsor" Version="4.0.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Rebus" Version="4.1.0" />
     <PackageReference Include="Rebus.Castle.Windsor" Version="4.0.0" />

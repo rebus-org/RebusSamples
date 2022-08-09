@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
     <ProjectGuid>{C4613784-944B-47E3-8DAB-53AD9AD1E6BB}</ProjectGuid>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>IntegrationSample.IntegrationService.Messages</AssemblyTitle>
     <Product>IntegrationSample.IntegrationService.Messages</Product>
     <Copyright>Copyright ©  2012</Copyright>

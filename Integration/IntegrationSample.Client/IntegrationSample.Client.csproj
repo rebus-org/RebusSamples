@@ -4,7 +4,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <ProjectGuid>{05ECDCA2-9D2A-43A6-8DAE-7A240C53346A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>IntegrationSample.Client</AssemblyTitle>
     <Product>IntegrationSample.Client</Product>
