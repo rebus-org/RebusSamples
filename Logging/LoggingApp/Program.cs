@@ -14,14 +14,12 @@ namespace LoggingApp
     {
         static void Main()
         {
-            using (var activator = new BuiltinHandlerActivator())
-            {
-                ConfigureUsing(activator);
+            using var activator = new BuiltinHandlerActivator();
+            
+            ConfigureUsing(activator);
 
-                Console.WriteLine("Press ENTER to quit");
-                Console.ReadLine();
-            }
-
+            Console.WriteLine("Press ENTER to quit");
+            Console.ReadLine();
         }
 
         static void ConfigureUsing(IHandlerActivator activator)
