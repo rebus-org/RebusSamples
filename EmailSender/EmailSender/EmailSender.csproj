@@ -21,7 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.0.0" />
     <PackageReference Include="Castle.Windsor" Version="4.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rebus" Version="4.1.0" />
     <PackageReference Include="Rebus.Castle.Windsor" Version="4.0.0" />
     <PackageReference Include="Rebus.Msmq" Version="4.0.0" />
