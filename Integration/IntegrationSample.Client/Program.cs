@@ -42,7 +42,5 @@ class Program
                     break;
             }
         } while (keepRunning);
-
-        container.Dispose();
     }
 }
