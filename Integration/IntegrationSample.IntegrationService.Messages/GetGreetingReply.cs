@@ -1,7 +1,6 @@
-namespace IntegrationSample.IntegrationService.Messages
+namespace IntegrationSample.IntegrationService.Messages;
+
+public class GetGreetingReply
 {
-    public class GetGreetingReply
-    {
-        public string TheGreeting { get; set; }
-    }
+    public string TheGreeting { get; set; }
 }

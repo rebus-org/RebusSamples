@@ -7,43 +7,42 @@ using Rebus.Config;
 using Rebus.Handlers;
 using Rebus.Routing.TypeBased;
 
-namespace IntegrationSample.Client
+namespace IntegrationSample.Client;
+
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main()
+        using var container = new WindsorContainer()
+            .Register(Component.For<IHandleMessages<GetGreetingReply>>()
+                .ImplementedBy<GetGreetingReplyHandler>()
+                .LifestyleTransient());
+
+        var bus = Configure.With(new CastleWindsorContainerAdapter(container))
+            .Logging(l => l.None()) // disable logging to avoid polluting the console
+            .Transport(t => t.UseMsmq("IntegrationSample.Client.input"))
+            .Routing(d => d.TypeBased().MapAssemblyOf<GetGreetingRequest>("IntegrationSample.IntegrationService.input"))
+            .Start();
+
+        Console.WriteLine("Press R to request a greeting and Q to quit...");
+
+        var keepRunning = true;
+        do
         {
-            var container = new WindsorContainer()
-                .Register(Component.For<IHandleMessages<GetGreetingReply>>()
-                              .ImplementedBy<GetGreetingReplyHandler>()
-                              .LifestyleTransient());
+            var key = Console.ReadKey(true);
 
-            var bus = Configure.With(new CastleWindsorContainerAdapter(container))
-                .Logging(l => l.None()) // disable logging to avoid polluting the console
-                .Transport(t => t.UseMsmq("IntegrationSample.Client.input"))
-                .Routing(d => d.TypeBased().MapAssemblyOf<GetGreetingRequest>("IntegrationSample.IntegrationService.input"))
-                .Start();
-
-            Console.WriteLine("Press R to request a greeting and Q to quit...");
-
-            var keepRunning = true;
-            do
+            switch (char.ToLower(key.KeyChar))
             {
-                var key = Console.ReadKey(true);
+                case 'r':
+                    bus.Send(new GetGreetingRequest()).Wait();
+                    break;
 
-                switch (char.ToLower(key.KeyChar))
-                {
-                    case 'r':
-                        bus.Send(new GetGreetingRequest()).Wait();
-                        break;
+                case 'q':
+                    keepRunning = false;
+                    break;
+            }
+        } while (keepRunning);
 
-                    case 'q':
-                        keepRunning = false;
-                        break;
-                }
-            } while (keepRunning);
-
-            container.Dispose();
-        }
+        container.Dispose();
     }
 }
