@@ -4,7 +4,7 @@ This sample demonstrates how sagas can be made with Rebus.
 
 Sagas (also known in the literature as "[process managers](http://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)") are stateful services. You can think of them as state machines whose transitions are driven by messages.
 
-With Rebus, you build a saga by creating a handler that is derived from the generic `Saga&lt;TSagaData&gt;` class, closing it with the type of your saga data. The "saga data" is the chunk of state, which gets automatically saved between handling messages, and thus represents the state of the state machine.
+With Rebus, you build a saga by creating a handler that is derived from the generic `Saga<TSagaData>` class, closing it with the type of your saga data. The "saga data" is the chunk of state, which gets automatically saved between handling messages, and thus represents the state of the state machine.
 
 Sagas don't do anything that you could not have built yourself with a database and ordinary message handlers. They just save you the time it takes to handle
 
@@ -97,7 +97,7 @@ This means that we must support a state machine with transitions for all possibl
                  |                                   |                                   |                        V
              +-------+                    +-------+---                       +-------+   |                     +-------+
       Start  | A: 0  | TaxesCalculated    | A: 0  | PayoutMethodSelected     | A: 0  |   |  AmountsCalculated  | A: 1  |  End
-    O------->| T: 0  |------------------->| T: 1  |------------------------->| T: 1  |---)---------------------| T: 1  |------>Ø
+    O------->| T: 0  |------------------->| T: 1  |------------------------->| T: 1  |---)---------------------| T: 1  |------>Ã˜
              | P: 0  |                    | P: 0  |                      |   | P: 1  |   |                     | P: 1  |
              +-------+                    +-------+    TaxesCalculated   |   +-------+   |                     +-------+
                  |                                   ---------------------       ________|                        A
@@ -120,7 +120,7 @@ state machine is represented by the `(A, T, P)` tuple shown in the box, we could
                |   V
              +-------+
       Start  | A: 0  |  End
-    O------->| T: 0  |------>Ø
+    O------->| T: 0  |------>Ã˜
              | P: 0  |
              +-------+
 
