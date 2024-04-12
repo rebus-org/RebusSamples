@@ -4,6 +4,7 @@ open System
 open System.Threading.Tasks
 open Microsoft.Extensions.DependencyInjection
 open OnboardingMessages
+open Rebus.Auditing.Messages
 open Rebus.Bus
 open Rebus.Config
 open Rebus.Persistence.FileSystem
@@ -18,6 +19,8 @@ let configureRebus (rebus: RebusConfigurer) =
     rebus.Options       (fun t -> t.RetryStrategy(errorQueueName = "ErrorQueue"))                         |> ignore
     rebus.Sagas         (fun s -> s.UseFilesystem("c:/rebus/sagas"))                                      |> ignore
     rebus.Timeouts      (fun s -> s.UseFileSystem("c:/rebus/timeouts"))                                   |> ignore
+    rebus.Options       (fun x -> x.EnableMessageAuditing("Audit"))                                       |> ignore
+
     rebus
 
 type Backend() =
