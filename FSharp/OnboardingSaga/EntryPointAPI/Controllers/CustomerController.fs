@@ -10,6 +10,7 @@ type CustomerController (bus : IBus) =
     inherit ControllerBase()
     let _bus = bus
 
+    /// EG: POST /newcustomer?name=snafu&email=foo@bar.com
     [<Route("newcustomer")>]
     [<HttpPost>]
     member this.NewCustomer(name: string, email: string) = task {
