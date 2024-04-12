@@ -16,7 +16,7 @@
     <PackageReference Include="Rebus" Version="6.4.1" />
     <PackageReference Include="Rebus.Serilog" Version="6.0.0" />
     <PackageReference Include="Rebus.ServiceProvider" Version="5.0.6" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Topper" Version="3.2.1" />
     <PackageReference Include="TaskBuilder.fs" Version="2.1.0" />
   </ItemGroup>
