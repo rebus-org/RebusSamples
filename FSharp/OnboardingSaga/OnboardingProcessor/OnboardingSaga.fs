@@ -12,10 +12,10 @@ type OnboardingSagaData() =
     interface ISagaData with
         member this.Id
             with get () = this.Id
-            and set (value) = this.Id <- value
+            and set value = this.Id <- value
         member this.Revision
             with get () = this.Revision
-            and set (value) = this.Revision <- value
+            and set value = this.Revision <- value
 
     member val Id       = Guid.Empty with get, set
     member val Revision = 0          with get, set

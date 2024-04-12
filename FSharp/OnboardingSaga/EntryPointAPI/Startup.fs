@@ -30,7 +30,7 @@ type Startup(configuration: IConfiguration) =
         services.AddRebus(Lib.configure) |> ignore
 
     member _.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
-        if (env.IsDevelopment()) then
+        if env.IsDevelopment() then
             app.UseDeveloperExceptionPage() |> ignore
         app.UseHttpsRedirection()
            .UseRouting()
