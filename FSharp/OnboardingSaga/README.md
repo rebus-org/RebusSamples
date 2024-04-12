@@ -23,3 +23,14 @@ it does not do that then the business wants the following to happen:
 
 * Any placed sales call is to be cancelled.
 * The service desk takes over the process.
+
+**Note** that the `SendWelcomeEmail` handler simulates a delay resulting in the OLA always being breached.
+
+    interface IHandleMessages<SendWelcomeEmail> with
+        member x.Handle(m: SendWelcomeEmail) =
+            task
+                {
+                    Log.Information($"Sending welcome email for account {m.AccountId}.")
+                    do! Task.Delay(10000); // This delay will breach our OLA rules!
+                    do! bus.Reply(WelcomeEmailSent.For m.AccountId)
+                } :> Task
