@@ -1,38 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <ProjectGuid>{5D2AE824-9457-4C59-8BB5-3F500FB02BBF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net45</TargetFramework>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <AssemblyTitle>Consumer</AssemblyTitle>
-    <Product>Consumer</Product>
-    <Copyright>Copyright ©  2013</Copyright>
-    <AssemblyTitle>Consumer</AssemblyTitle>
-    <Product>Consumer</Product>
-    <Copyright>Copyright ©  2013</Copyright>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Npgsql" Version="3.2.2" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
-    <PackageReference Include="Rebus.PostgreSql" Version="4.0.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Messages\Messages.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Npgsql" Version="8.0.3" />
+		<PackageReference Include="Rebus" Version="8.4.2" />
+		<PackageReference Include="Rebus.PostgreSql" Version="9.0.1" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Messages\Messages.csproj" />
+	</ItemGroup>
 </Project>
