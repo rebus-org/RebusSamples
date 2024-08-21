@@ -81,7 +81,7 @@ One possible sequence could be this:
     
 where it can be seen that a process of sorts is kicked off when the first event arrives, and then the process receives the other two neessary events, and finally the `PayoutReady` is published when all three events have been received for that particular case number.
 
-In the real world, messages can be delayed for different reasons. When you want to build robust systems, you should NOT rely on the order of events (too much), so we want to make the process infifferent to the order in which the three events are received.
+In the real world, messages can be delayed for different reasons. When you want to build robust systems, you should NOT rely on the order of events (too much), so we want to make the process indifferent to the order in which the three events are received.
 
 This means that we must support a state machine with transitions for all possible permutations of the tree events. We could draw it like this:
 
