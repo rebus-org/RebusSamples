@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Messages;
+﻿using Messages;
 using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
-using Rebus.PostgreSql.Transport;
+using System;
+using System.Threading.Tasks;
 
 namespace Consumer
 {
@@ -16,7 +15,7 @@ namespace Consumer
             {
                 adapter.Handle<Job>(async job =>
                 {
-                    Console.WriteLine("Processing job {0}", job.JobNumber);
+                    Console.WriteLine("Processing job {0} - {1}", job.JobNumber, job.JobUuid);
 
                     await Task.Delay(TimeSpan.FromMilliseconds(300));
                 });
