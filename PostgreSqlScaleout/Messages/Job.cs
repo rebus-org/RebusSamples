@@ -11,6 +11,7 @@ namespace Messages
         }
 
         public int JobNumber { get; }
+
         public Guid JobUuid { get; }
     }
 }

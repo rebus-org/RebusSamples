@@ -19,6 +19,7 @@ Check out
 * [MessageBus](/MessageBus) - demonstrates how tree totally independent endpoints can do pub/sub with a central database being their only connection
 * [RequestReply](/RequestReply) - demonstrates how a client can send a request to a server, which then can reply back to the client
 * [SharedNothing](/SharedNothing) - demonstrates how a publisher and a subscriber can communicate without sharing class libraries or anything
+* [PostgreSqlRequestReply](/PostgreSqlRequestReply) - demonstrates how a client can send a request to a server, which then can reply back to the client
 
 ### Scaleout samples
 
