@@ -1,0 +1,60 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"     # AMQP protocol
+      - "15672:15672"   # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: showdown
+      RABBITMQ_DEFAULT_PASS: showdownpw
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: showdown
+      POSTGRES_PASSWORD: showdownpw
+      POSTGRES_DB: showdowndb
+    ports:
+      - "55432:5432"
+    restart: unless-stopped
+    command: postgres -c synchronous_commit=off
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Showdown!2025"
+      MSSQL_PID: "Developer"
+    ports:
+      - "11433:1433"
+    restart: unless-stopped
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - showdown-network
+
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      - mssql
+    entrypoint: >
+      /bin/bash -c "\
+        for i in {1..30}; do \
+          /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P 'Showdown!2025' -Q 'SELECT 1' -C && break || sleep 2; \
+        done; \
+        /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P 'Showdown!2025' -i /init-db.sql -C
+      "
+    volumes:
+      - ./mssql-init/init-db.sql:/init-db.sql:ro
+    networks:
+      - showdown-network
+    restart: 'no'
+
+networks:
+  showdown-network:
+    external: false
+
+volumes:
+  mssql-data:
+

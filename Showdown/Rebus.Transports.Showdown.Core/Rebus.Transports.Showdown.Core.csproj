@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{FEA9F7D9-1B00-4535-AC4D-BF3934A7B913}</ProjectGuid>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>Rebus.Transports.Showdown.Core</AssemblyTitle>
     <Product>Rebus.Transports.Showdown.Core</Product>
@@ -20,12 +20,8 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
+    <PackageReference Include="Rebus" Version="8.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 </Project>

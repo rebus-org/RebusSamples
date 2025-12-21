@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{B6B36DD1-9B9F-46BD-B705-6BC36C60D28D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>Rebus.Transports.Showndown.RabbitMq</AssemblyTitle>
     <Product>Rebus.Transports.Showndown.RabbitMq</Product>
@@ -21,15 +21,11 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="4.1.1" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
-    <PackageReference Include="Rebus.RabbitMq" Version="4.1.2" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+    <PackageReference Include="Rebus" Version="8.9.0" />
+    <PackageReference Include="Rebus.RabbitMq" Version="10.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rebus.Transports.Showdown.Core\Rebus.Transports.Showdown.Core.csproj" />

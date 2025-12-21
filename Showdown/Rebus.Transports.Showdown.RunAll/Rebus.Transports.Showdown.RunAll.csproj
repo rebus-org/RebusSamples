@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{FC0575E5-CD9E-4F2A-9B01-D2C0BB66B2C9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyTitle>Rebus.Transports.Showdown.RunAll</AssemblyTitle>
     <Product>Rebus.Transports.Showdown.RunAll</Product>
     <Copyright>Copyright ©  2013</Copyright>
@@ -19,13 +19,8 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Rebus.Transports.Showdown.Postgresql\Rebus.Transports.Showdown.Postgresql.csproj" />
     <ProjectReference Include="..\Rebus.Transports.Showdown.SqlServer\Rebus.Transports.Showdown.SqlServer.csproj" />
-    <ProjectReference Include="..\Rebus.Transports.Showndown.Msmq\Rebus.Transports.Showndown.Msmq.csproj" />
     <ProjectReference Include="..\Rebus.Transports.Showndown.RabbitMq\Rebus.Transports.Showdown.RabbitMq.csproj" />
   </ItemGroup>
 </Project>
