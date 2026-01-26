@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{BAA972E0-27AE-450D-A45D-098801082A10}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Rebus.Transports.Showdown.Postgresql</AssemblyTitle>
     <Product>Rebus.Transports.Showdown.Postgresql</Product>
@@ -20,17 +20,11 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Npgsql" Version="3.2.2" />
-    <PackageReference Include="Rebus" Version="4.1.0" />
-    <PackageReference Include="Rebus.PostgreSql" Version="4.0.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
+    <PackageReference Include="Npgsql" Version="10.0.1" />
+    <PackageReference Include="Rebus" Version="8.9.0" />
+    <PackageReference Include="Rebus.PostgreSql" Version="9.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rebus.Transports.Showdown.Core\Rebus.Transports.Showdown.Core.csproj" />

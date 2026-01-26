@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
@@ -12,127 +12,122 @@ using Timer = System.Timers.Timer;
 
 namespace Rebus.Transports.Showdown.Core
 {
-    public class ShowdownRunner : IDisposable
-    {
-        const int MessageCount = 10000;
-        const int NumberOfWorkers = 5;
+	public class ShowdownRunner : IDisposable
+	{
+		const int MessageCount = 10000;
+		const int NumberOfWorkers = 5;
 
-        readonly BuiltinHandlerActivator _adapter = new BuiltinHandlerActivator();
+		readonly BuiltinHandlerActivator _adapter = new();
 
-        public BuiltinHandlerActivator Adapter => _adapter;
+		public BuiltinHandlerActivator Adapter => _adapter;
 
-        public async Task Run(string showdownName)
-        {
-            try
-            {
-                using (var printTimer = new Timer())
-                {
-                    var sentMessagesCount = 0;
-                    var receivedMessagesCount = 0;
-                    printTimer.Interval = 5000;
-                    printTimer.Elapsed +=
-                        delegate
-                        {
-                            Print("Sent {0} messages. Received {1} messages.", sentMessagesCount, receivedMessagesCount);
-                        };
-                    printTimer.Start();
+		public async Task Run(string showdownName)
+		{
+			try
+			{
+				using var printTimer = new Timer();
+				var sentMessagesCount = 0;
+				var receivedMessagesCount = 0;
+				printTimer.Interval = 5000;
+				printTimer.Elapsed +=
+					delegate
+					{
+						Print("Sent {0} messages. Received {1} messages.", sentMessagesCount, receivedMessagesCount);
+					};
+				printTimer.Start();
 
-                    Print(@"----------------------------------------------------------------------
+				Print(@"----------------------------------------------------------------------
 Running showdown: {0}
 ----------------------------------------------------------------------",
-                        showdownName);
-                    // .GetName()
-                    // .Name);
+					showdownName);
 
-                    var receivedMessageIds = new ConcurrentDictionary<int, int>();
-                    var receivedMessages = 0;
+				var receivedMessageIds = new ConcurrentDictionary<int, int>();
+				var receivedMessages = 0;
 
-                    Print("Stopping all workers in receiver");
-                    var receiverBus = (RebusBus)_adapter.Bus;
-                    receiverBus.SetNumberOfWorkers(0);
+				Print("Stopping all workers in receiver");
+				var receiverBus = (RebusBus)_adapter.Bus;
+				receiverBus.SetNumberOfWorkers(0);
 
-                    Thread.Sleep(TimeSpan.FromSeconds(2));
+				Thread.Sleep(TimeSpan.FromSeconds(2));
 
-                    Print("Sending {0} messages from sender to receiver", MessageCount);
+				Print("Sending {0} messages from sender to receiver", MessageCount);
 
-                    var senderWatch = Stopwatch.StartNew();
+				var senderWatch = Stopwatch.StartNew();
 
-                    await Task.WhenAll(Enumerable.Range(0, MessageCount)
-                     .Select(async i =>
-                        {
-                            var message = new TestMessage { MessageId = i };
-                            receivedMessageIds[message.MessageId] = 0;
-                            await _adapter.Bus.SendLocal(message);
-                            Interlocked.Increment(ref sentMessagesCount);
-                        }));
+				await Task.WhenAll(Enumerable.Range(0, MessageCount)
+				 .Select(async i =>
+					{
+						var message = new TestMessage { MessageId = i };
+						receivedMessageIds[message.MessageId] = 0;
+						await _adapter.Bus.SendLocal(message);
+						Interlocked.Increment(ref sentMessagesCount);
+					}));
 
-                    var totalSecondsSending = senderWatch.Elapsed.TotalSeconds;
-                    Print("Sending {0} messages took {1:0.0} s ({2:0.0} msg/s)",
-                        MessageCount, totalSecondsSending, MessageCount / totalSecondsSending);
+				var totalSecondsSending = senderWatch.Elapsed.TotalSeconds;
+				Print("Sending {0} messages took {1:0.0} s ({2:0.0} msg/s)",
+					MessageCount, totalSecondsSending, MessageCount / totalSecondsSending);
 
-                    var resetEvent = new ManualResetEvent(false);
+				var resetEvent = new ManualResetEvent(false);
 
-                    _adapter.Handle<TestMessage>(async message =>
-                    {
-                        var result = Interlocked.Increment(ref receivedMessages);
-                        if (result == MessageCount)
-                        {
-                            resetEvent.Set();
-                        }
-                        Interlocked.Increment(ref receivedMessagesCount);
-                    });
+				_adapter.Handle<TestMessage>(async message =>
+				{
+					var result = Interlocked.Increment(ref receivedMessages);
+					if (result == MessageCount)
+					{
+						resetEvent.Set();
+					}
+					Interlocked.Increment(ref receivedMessagesCount);
+				});
 
+				Print("Starting receiver with {0} workers", NumberOfWorkers);
 
-                    Print("Starting receiver with {0} workers", NumberOfWorkers);
+				var receiverWatch = Stopwatch.StartNew();
+				receiverBus.Advanced.Workers.SetNumberOfWorkers(NumberOfWorkers);
 
-                    var receiverWatch = Stopwatch.StartNew();
-                    receiverBus.Advanced.Workers.SetNumberOfWorkers(NumberOfWorkers);
+				resetEvent.WaitOne();
+				var totalSecondsReceiving = receiverWatch.Elapsed.TotalSeconds;
 
-                    resetEvent.WaitOne();
-                    var totalSecondsReceiving = receiverWatch.Elapsed.TotalSeconds;
+				Thread.Sleep(2000);
+				printTimer.Stop();
+				var totalRate = MessageCount / totalSecondsReceiving;
+				var perWorkerRate = totalRate / NumberOfWorkers;
+				Print($"Receiving {MessageCount} messages took {totalSecondsReceiving} s ({totalRate:0.0} msg/s with {NumberOfWorkers} workers rate of {perWorkerRate:0.0} msg/s per worker");
+			}
+			catch (Exception e)
+			{
+				Print("Error: {0}", e);
+			}
+		}
 
-                    Thread.Sleep(2000);
-                    printTimer.Stop();
-                    Print("Receiving {0} messages took {1:0.0} s ({2:0.0} msg/s)",
-                        MessageCount, totalSecondsReceiving, MessageCount / totalSecondsReceiving);
+		static void Print(string message, params object[] objs)
+		{
+			Console.WriteLine(message, objs);
+		}
 
-                }
-            }
-            catch (Exception e)
-            {
-                Print("Error: {0}", e);
-            }
-        }
+		void IDisposable.Dispose()
+		{
+			if (_disposing || _disposed) return;
 
-        void Print(string message, params object[] objs)
-        {
-            Console.WriteLine(message, objs);
-        }
+			lock (this)
+			{
+				if (_disposing || _disposed) return;
 
-        public void Dispose()
-        {
-            if (_disposing || _disposed) return;
+				try
+				{
+					_disposing = true;
+					_adapter.Dispose();
+				}
+				finally
+				{
+					_disposed = true;
+					_disposing = false;
+				}
+			}
+		}
 
-            lock (this)
-            {
-                if (_disposing || _disposed) return;
-
-                try
-                {
-                    _disposing = true;
-                    _adapter.Dispose();
-                }
-                finally
-                {
-                    _disposed = true;
-                    _disposing = false;
-                }
-            }
-        }
-
-        bool _disposed;
-        bool _disposing;
+		bool _disposed;
+		bool _disposing;
 
 
-    }
+	}
 }
